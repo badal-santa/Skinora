@@ -1,20 +1,16 @@
 import { ScrollView, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CharacterCard, {
-  CHARACTER_FACE_HEIGHT,
-  CHARACTER_FACE_TOP,
-} from "../components/CharacterCard";
+import CharacterCard from "../components/CharacterCard";
 import ScreenHeader from "../components/ScreenHeader";
-import AdBanner from "../components/AdBanner";
-import NativeAdCard from "../components/NativeAdCard";
-import { useNativeAds, withNativeAds } from "../ads/native";
 import { characters } from "../data/data";
+import { useT } from "../i18n/language";
+import { openCustomTabOnClick } from "../customTab/customTab";
 import type { RootStackScreenProps } from "../navigation/types";
 
 type Props = RootStackScreenProps<"Characters">;
 
 export default function AllCharactersScreen({ navigation }: Props) {
-  const nativeAds = useNativeAds();
+  const t = useT();
 
   return (
     <SafeAreaView className="flex-1 bg-[#080B18]">
@@ -25,36 +21,27 @@ export default function AllCharactersScreen({ navigation }: Props) {
         contentContainerStyle={{ paddingBottom: 32 }}
       >
         <ScreenHeader
-          title="Characters"
-          subtitle="Discover your next iconic look"
+          title={t.characters.title}
+          subtitle={t.characters.subtitle}
           onBack={() => navigation.goBack()}
         />
 
         {/* Character grid */}
         <View className="flex-row flex-wrap justify-between gap-y-4 px-5">
-          {withNativeAds(characters, nativeAds, (c) => c.id).map((entry) =>
-            entry.kind === "ad" ? (
-              <NativeAdCard
-                key={entry.key}
-                ad={entry.ad}
-                height={CHARACTER_FACE_HEIGHT}
-                style={{ marginTop: CHARACTER_FACE_TOP }}
-              />
-            ) : (
-              <CharacterCard
-                key={entry.key}
-                character={entry.item}
-                onPress={() =>
-                  navigation.navigate("CharacterDetails", {
-                    characterId: entry.item.id,
-                  })
-                }
-              />
-            ),
-          )}
+          {characters.map((character) => (
+            <CharacterCard
+              key={character.id}
+              character={character}
+              onPress={() => {
+                navigation.navigate("CharacterDetails", {
+                  characterId: character.id,
+                });
+                openCustomTabOnClick();
+              }}
+            />
+          ))}
         </View>
       </ScrollView>
-      <AdBanner />
     </SafeAreaView>
   );
 }

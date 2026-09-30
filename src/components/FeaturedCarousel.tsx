@@ -19,6 +19,7 @@ import { ArrowRight } from "lucide-react-native";
 import { Text } from "./Text";
 import type { ParamlessRoute } from "../navigation/types";
 import { colors, withAlpha } from "../theme/colors";
+import { useT } from "../i18n/language";
 
 export type FeaturedSlide = {
   id: string;
@@ -131,6 +132,7 @@ type SlideProps = {
 
 function Slide({ slide, index, width, scrollX, onPress }: SlideProps) {
   const { tag, title, subtitle, image, accent } = slide;
+  const t = useT();
   const art = artLayout(image, width - H_PADDING * 2, slide.art ?? "popOut");
 
   // Parallax: the character drifts slower than the slide and fades at the edges.
@@ -271,7 +273,7 @@ function Slide({ slide, index, width, scrollX, onPress }: SlideProps) {
                 }}
               >
                 <Text className="text-[11px] font-extrabold text-background">
-                  EXPLORE
+                  {t.common.explore}
                 </Text>
                 <ArrowRight
                   size={13}

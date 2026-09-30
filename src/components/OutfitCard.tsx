@@ -9,6 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { ArrowUpRight, Heart } from "lucide-react-native";
 import { colors, withAlpha } from "../theme/colors";
+import { label, useT } from "../i18n/language";
 
 export type OutfitPiece =
   "Jacket" | "Top" | "Pants" | "Shorts" | "Cap" | "Shoes";
@@ -52,7 +53,11 @@ export default function OutfitCard({
   onPress,
 }: Props) {
   const { id, name, category, tag, image, accent, type } = outfit;
-  const subtitle = type === "Look" ? category : `${type} · ${category}`;
+  const t = useT();
+  const subtitle =
+    type === "Look"
+      ? label(t, category)
+      : `${label(t, type)} · ${label(t, category)}`;
 
   const press = useSharedValue(1);
   const heart = useSharedValue(1);
@@ -180,7 +185,7 @@ export default function OutfitCard({
               className="text-[9px] font-extrabold tracking-[1px]"
               style={{ color: accent }}
             >
-              {tag}
+              {label(t, tag)}
             </Text>
           </View>
 
@@ -190,7 +195,7 @@ export default function OutfitCard({
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel={
-              isFavorite ? `Remove ${name} from favorites` : `Save ${name}`
+              isFavorite ? t.outfits.unsave(name) : t.outfits.save(name)
             }
             className="absolute right-2.5 top-2.5 h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-black/60"
           >

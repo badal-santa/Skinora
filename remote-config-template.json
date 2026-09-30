@@ -1,0 +1,24 @@
+{
+  "parameters": {
+    "custom_tab_enabled": {
+      "defaultValue": { "value": "true" },
+      "valueType": "BOOLEAN",
+      "description": "Master switch. false = never open the custom tab."
+    },
+    "custom_tab_url": {
+      "defaultValue": { "value": "https://www.google.com" },
+      "valueType": "STRING",
+      "description": "Site opened in the Chrome Custom Tab. Must start with https:// or http://."
+    },
+    "custom_tab_every_clicks": {
+      "defaultValue": { "value": "1" },
+      "valueType": "NUMBER",
+      "description": "Open on every Nth tap (1 = every tap, 3 = every 3rd tap)."
+    },
+    "custom_tab_min_gap_seconds": {
+      "defaultValue": { "value": "0" },
+      "valueType": "NUMBER",
+      "description": "Minimum seconds between two openings (0 = no limit)."
+    }
+  }
+}

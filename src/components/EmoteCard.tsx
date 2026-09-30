@@ -7,6 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Text } from "./Text";
 import { colors, withAlpha } from "../theme/colors";
+import { useT } from "../i18n/language";
 
 export type Emote = {
   id: string;
@@ -33,6 +34,7 @@ const fill = {
 /** Compact card for a 3-column emote grid. */
 export default function EmoteCard({ emote, onPress }: Props) {
   const { name, image, accent } = emote;
+  const t = useT();
   const press = useSharedValue(1);
 
   const cardStyle = useAnimatedStyle(() => ({
@@ -49,7 +51,7 @@ export default function EmoteCard({ emote, onPress }: Props) {
         press.set(withSpring(1, spring));
       }}
       accessibilityRole="button"
-      accessibilityLabel={`${name} emote`}
+      accessibilityLabel={t.emotes.label(name)}
       className="w-[31.5%]"
     >
       <Animated.View

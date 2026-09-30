@@ -3,6 +3,7 @@ import { Pressable, View } from "react-native";
 import { Text } from "./Text";
 import { ChevronLeft } from "lucide-react-native";
 import { colors } from "../theme/colors";
+import { useT } from "../i18n/language";
 
 type Props = {
   title: string;
@@ -19,6 +20,8 @@ export default function ScreenHeader({
   onBack,
   right,
 }: Props) {
+  const t = useT();
+
   return (
     <View className="flex-row items-center px-5 pb-5 pt-4">
       {onBack && (
@@ -26,7 +29,7 @@ export default function ScreenHeader({
           onPress={onBack}
           hitSlop={8}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
+          accessibilityLabel={t.common.back}
           className="mr-4 h-11 w-11 items-center justify-center rounded-2xl border border-border bg-card active:opacity-70"
         >
           <ChevronLeft size={22} color={colors.foreground} />

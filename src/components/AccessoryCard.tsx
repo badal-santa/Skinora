@@ -8,6 +8,7 @@ import Animated, {
 import { Text } from "./Text";
 import type { Outfit } from "./OutfitCard";
 import { colors, withAlpha } from "../theme/colors";
+import { label, useT } from "../i18n/language";
 
 type Props = {
   item: Outfit;
@@ -30,6 +31,8 @@ const fill = {
  */
 export default function AccessoryCard({ item, onPress }: Props) {
   const { name, type, category, tag, image, accent } = item;
+  const t = useT();
+  const details = `${label(t, type)} · ${label(t, category)}`;
 
   const press = useSharedValue(1);
 
@@ -47,7 +50,7 @@ export default function AccessoryCard({ item, onPress }: Props) {
         press.set(withSpring(1, spring));
       }}
       accessibilityRole="button"
-      accessibilityLabel={`${name}, ${type}, ${category}`}
+      accessibilityLabel={`${name}, ${details}`}
     >
       <Animated.View
         style={[
@@ -142,7 +145,7 @@ export default function AccessoryCard({ item, onPress }: Props) {
                 className="ml-1.5 text-[9px] font-extrabold tracking-[1px]"
                 style={{ color: accent }}
               >
-                {tag}
+                {label(t, tag)}
               </Text>
             </View>
             <Text
@@ -154,7 +157,7 @@ export default function AccessoryCard({ item, onPress }: Props) {
           </View>
 
           <Text className="mt-0.5 text-xs text-muted" numberOfLines={1}>
-            {type} · {category}
+            {details}
           </Text>
         </View>
       </Animated.View>

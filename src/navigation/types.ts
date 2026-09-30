@@ -13,6 +13,8 @@ export type RootStackParamList = {
   Emotes: undefined;
   EmoteDetails: { emoteId: string };
   Settings: undefined;
+  /** First launch continues to Home; from Settings it goes back. */
+  Language: { fromSettings?: boolean } | undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

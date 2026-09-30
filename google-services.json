@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105956163635",
+    "project_id": "skinora-89c74",
+    "storage_bucket": "skinora-89c74.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105956163635:android:bfd0d22a8f28961e4ae346",
+        "android_client_info": {
+          "package_name": "com.santabrowser.skinora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWYjm4cMwjvT8pTwa43TKjyuL6PUxspHQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

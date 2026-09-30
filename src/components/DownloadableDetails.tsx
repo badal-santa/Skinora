@@ -22,9 +22,10 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { Check, ChevronLeft, Clapperboard, Share2 } from "lucide-react-native";
+import { Check, ChevronLeft, Download, Share2 } from "lucide-react-native";
 import { colors, withAlpha } from "../theme/colors";
-import { showRewardedAd } from "../ads/rewarded";
+import { APP_NAME } from "../config/app";
+import { useT } from "../i18n/language";
 import { getAssetFileUri } from "../utils/assetFile";
 
 type Props = {
@@ -42,11 +43,11 @@ const fill = {
   bottom: 0,
 } as const;
 
-type DownloadState = "idle" | "ad" | "saving" | "saved";
+type DownloadState = "idle" | "saving" | "saved";
 
 /**
- * Full-screen item view: animated neon hero, share, and the
- * "Watch Ad to Download" rewarded flow. Shared by outfit and emote details.
+ * Full-screen item view: animated neon hero, share, and download to photos.
+ * Shared by outfit, character, emote and accessory details.
  */
 export default function DownloadableDetails({
   name,
@@ -55,6 +56,7 @@ export default function DownloadableDetails({
   onBack,
 }: Props) {
   const insets = useSafeAreaInsets();
+  const t = useT();
   const [download, setDownload] = useState<DownloadState>("idle");
 
   const enter = useSharedValue(0);
@@ -109,7 +111,9 @@ export default function DownloadableDetails({
   }));
 
   const share = () => {
-    Share.share({ message: `Check out ${name} on Skinora ✨` }).catch(() => {});
+    Share.share({ message: t.details.shareMessage(name, APP_NAME) }).catch(
+      () => {},
+    );
   };
 
   const saveToPhotos = async () => {
@@ -121,14 +125,14 @@ export default function DownloadableDetails({
       if (!granted) {
         setDownload("idle");
         Alert.alert(
-          "Photos access needed",
-          "Allow Skinora to save images to your photo library.",
+          t.details.photosTitle,
+          t.details.photosMessage(APP_NAME),
           canAskAgain
-            ? [{ text: "OK" }]
+            ? [{ text: t.common.ok }]
             : [
-                { text: "Cancel", style: "cancel" },
+                { text: t.common.cancel, style: "cancel" },
                 {
-                  text: "Open Settings",
+                  text: t.common.openSettings,
                   onPress: () => Linking.openSettings(),
                 },
               ],
@@ -143,36 +147,8 @@ export default function DownloadableDetails({
     } catch (error) {
       console.warn("[download] save failed:", error);
       setDownload("idle");
-      Alert.alert(
-        "Download failed",
-        "We couldn't save this image. Please try again.",
-      );
+      Alert.alert(t.details.failedTitle, t.details.failedMessage);
     }
-  };
-
-  /** Rewarded flow: the image saves only after the ad is watched to the end. */
-  const watchAdAndDownload = async () => {
-    // Already rewarded for this item — save again without another ad.
-    if (download === "saved") {
-      saveToPhotos();
-      return;
-    }
-
-    setDownload("ad");
-    const result = await showRewardedAd();
-
-    if (result === "dismissed") {
-      setDownload("idle");
-      Alert.alert(
-        "Ad not finished",
-        "Watch the full ad to download this image.",
-      );
-      return;
-    }
-
-    // "earned", or "unavailable" (no ad to show) — never block the download.
-    setDownload("idle");
-    saveToPhotos();
   };
 
   return (
@@ -274,7 +250,7 @@ export default function DownloadableDetails({
         <Pressable
           onPress={onBack}
           accessibilityRole="button"
-          accessibilityLabel="Go back"
+          accessibilityLabel={t.common.back}
           className="h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/50"
         >
           <ChevronLeft size={22} color={colors.foreground} />
@@ -283,7 +259,7 @@ export default function DownloadableDetails({
         <Pressable
           onPress={share}
           accessibilityRole="button"
-          accessibilityLabel="Share"
+          accessibilityLabel={t.common.share}
           className="h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/50"
         >
           <Share2 size={18} color={colors.foreground} />
@@ -296,13 +272,11 @@ export default function DownloadableDetails({
         style={{ paddingBottom: insets.bottom + 12 }}
       >
         <Pressable
-          onPress={watchAdAndDownload}
-          disabled={download === "ad" || download === "saving"}
+          onPress={saveToPhotos}
+          disabled={download === "saving"}
           accessibilityRole="button"
-          accessibilityLabel="Watch an ad to download this image to photos"
-          accessibilityState={{
-            busy: download === "ad" || download === "saving",
-          }}
+          accessibilityLabel={t.details.downloadLabel}
+          accessibilityState={{ busy: download === "saving" }}
           className="h-14 flex-1 overflow-hidden rounded-2xl active:opacity-90"
           style={{
             shadowColor: accent,
@@ -323,25 +297,19 @@ export default function DownloadableDetails({
               justifyContent: "center",
             }}
           >
-            {download === "ad" || download === "saving" ? (
+            {download === "saving" ? (
               <ActivityIndicator color={colors.background} />
             ) : download === "saved" ? (
               <Check size={18} color={colors.background} strokeWidth={3} />
             ) : (
-              <Clapperboard
-                size={18}
-                color={colors.background}
-                strokeWidth={2.6}
-              />
+              <Download size={18} color={colors.background} strokeWidth={2.6} />
             )}
             <Text className="ml-2 text-base font-extrabold text-background">
-              {download === "ad"
-                ? "Loading ad…"
-                : download === "saving"
-                  ? "Saving…"
-                  : download === "saved"
-                    ? "Saved to Photos"
-                    : "Watch Ad to Download"}
+              {download === "saving"
+                ? t.details.saving
+                : download === "saved"
+                  ? t.details.saved
+                  : t.details.download}
             </Text>
           </LinearGradient>
         </Pressable>

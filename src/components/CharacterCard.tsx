@@ -15,6 +15,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { colors, withAlpha } from "../theme/colors";
+import { label, useT } from "../i18n/language";
 
 export type Character = {
   id: string;
@@ -64,6 +65,7 @@ const GLOW_RINGS = [
 
 export default function CharacterCard({ character, onPress }: Props) {
   const { name, category, image, accent } = character;
+  const t = useT();
 
   const width = useSharedValue(0);
   const press = useSharedValue(0);
@@ -114,7 +116,7 @@ export default function CharacterCard({ character, onPress }: Props) {
       onPressOut={handlePressOut}
       onLayout={onLayout}
       accessibilityRole="button"
-      accessibilityLabel={`${name}, ${category}`}
+      accessibilityLabel={`${name}, ${label(t, category)}`}
       className="w-[48.2%]"
     >
       <Animated.View style={[{ height: CARD_HEIGHT }, cardStyle]}>

@@ -18,6 +18,7 @@ import { scheduleOnRN } from "react-native-worklets";
 import { Sparkles } from "lucide-react-native";
 import type { RootStackScreenProps } from "../navigation/types";
 import { colors, withAlpha } from "../theme/colors";
+import { loadLanguage, useT } from "../i18n/language";
 
 type Props = RootStackScreenProps<"Splash">;
 
@@ -32,6 +33,7 @@ const neonGlow = (color: string, radius = 18) => ({
 });
 
 export default function SplashScreen({ navigation }: Props) {
+  const t = useT();
   const [percentage, setPercentage] = useState(0);
 
   const logo = useSharedValue(0);
@@ -45,6 +47,7 @@ export default function SplashScreen({ navigation }: Props) {
   const exit = useSharedValue(1);
 
   useEffect(() => {
+    loadLanguage();
     logo.value = withSpring(1, { damping: 13, stiffness: 110 });
     spin.value = withRepeat(
       withTiming(1, { duration: 2600, easing: Easing.linear }),
@@ -92,8 +95,11 @@ export default function SplashScreen({ navigation }: Props) {
     const exitTimer = setTimeout(() => {
       exit.value = withTiming(0, { duration: EXIT_DURATION, easing: ease });
     }, LOAD_DURATION);
+    // First launch (no saved language) asks for one before Home.
     const navTimer = setTimeout(() => {
-      navigation.replace("Home");
+      loadLanguage().then((code) =>
+        navigation.replace(code ? "Home" : "Language"),
+      );
     }, LOAD_DURATION + EXIT_DURATION);
 
     return () => {
@@ -301,7 +307,7 @@ export default function SplashScreen({ navigation }: Props) {
           >
             <View className="h-px w-8 bg-primary/60" />
             <Text className="text-[10px] font-semibold tracking-[4px] text-muted">
-              YOUR WORLD. YOUR STYLE.
+              {t.splash.tagline}
             </Text>
             <View className="h-px w-8 bg-secondary/60" />
           </Animated.View>
@@ -325,7 +331,7 @@ export default function SplashScreen({ navigation }: Props) {
                 ]}
               />
               <Text className="text-[10px] font-semibold tracking-[3px] text-muted">
-                LOADING YOUR WORLD
+                {t.splash.loading}
               </Text>
             </View>
             <Text
@@ -351,7 +357,7 @@ export default function SplashScreen({ navigation }: Props) {
           </View>
 
           <Text className="mt-5 text-center text-[9px] font-medium tracking-[3px] text-subtle">
-            DISCOVER • CUSTOMIZE • EXPLORE
+            {t.splash.footer}
           </Text>
         </Animated.View>
       </Animated.View>

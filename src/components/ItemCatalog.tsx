@@ -4,9 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "./Text";
 import OutfitCard, { type Outfit, type OutfitPiece } from "./OutfitCard";
 import ScreenHeader from "./ScreenHeader";
-import AdBanner from "./AdBanner";
-import NativeAdCard from "./NativeAdCard";
-import { useNativeAds, withNativeAds } from "../ads/native";
+import { label, useT } from "../i18n/language";
+import type { Strings } from "../i18n/translations";
 import { colors } from "../theme/colors";
 
 type Props = {
@@ -17,8 +16,11 @@ type Props = {
   pieceFilters: OutfitPiece[];
   /** Filter chips by style, e.g. ["Streetwear", "Casual"]. */
   styleFilters: string[];
-  /** Plural noun for empty states, e.g. "outfits". */
-  noun: string;
+  /** Empty-state copy, e.g. `t.outfits`. */
+  emptyCopy: Pick<
+    Strings["outfits"],
+    "empty" | "emptySaved" | "emptyAll" | "emptyFilter" | "showAll"
+  >;
   onBack: () => void;
   onOpenItem: (item: Outfit) => void;
 };
@@ -26,8 +28,7 @@ type Props = {
 const RowGap = () => <View className="h-4" />;
 
 /**
- * Filterable 2-column grid of items with favourites, native ads and a banner.
- * Shared by the All Outfits and All Accessories screens.
+ * Filterable 2-column grid of items with favourites.
  */
 export default function ItemCatalog({
   title,
@@ -35,10 +36,11 @@ export default function ItemCatalog({
   items,
   pieceFilters,
   styleFilters,
-  noun,
+  emptyCopy,
   onBack,
   onOpenItem,
 }: Props) {
+  const t = useT();
   const [activeFilter, setActiveFilter] = useState("All");
   const [favorites, setFavorites] = useState<string[]>([]);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
@@ -61,12 +63,6 @@ export default function ItemCatalog({
         matchesFilter(item) && (!favoritesOnly || favorites.includes(item.id)),
     );
   }, [items, pieceFilters, activeFilter, favoritesOnly, favorites]);
-
-  const nativeAds = useNativeAds();
-  const gridItems = useMemo(
-    () => withNativeAds(filteredItems, nativeAds, (item) => item.id),
-    [filteredItems, nativeAds],
-  );
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -109,7 +105,7 @@ export default function ItemCatalog({
                 <Text
                   className={`text-xs font-bold ${isActive ? "text-background" : "text-muted"}`}
                 >
-                  {item}
+                  {label(t, item)}
                 </Text>
               </Pressable>
             </View>
@@ -121,11 +117,15 @@ export default function ItemCatalog({
 
   const emptyState = (
     <View className="items-center px-8 py-16">
-      <Text className="text-lg font-bold text-foreground">No {noun} found</Text>
+      <Text className="text-lg font-bold text-foreground">
+        {emptyCopy.empty}
+      </Text>
       <Text className="mt-2 text-center text-sm text-muted">
         {favoritesOnly
-          ? `No saved ${noun} match this filter.`
-          : `No ${noun} with ${activeFilter === "All" ? "these filters" : activeFilter.toLowerCase()} yet.`}
+          ? emptyCopy.emptySaved
+          : activeFilter === "All"
+            ? emptyCopy.emptyAll
+            : emptyCopy.emptyFilter(label(t, activeFilter))}
       </Text>
       <Pressable
         onPress={() => {
@@ -135,7 +135,7 @@ export default function ItemCatalog({
         className="mt-6 rounded-full bg-primary px-6 py-3"
       >
         <Text className="text-sm font-bold text-background">
-          Show all {noun}
+          {emptyCopy.showAll}
         </Text>
       </Pressable>
     </View>
@@ -146,8 +146,8 @@ export default function ItemCatalog({
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       <FlatList
-        data={gridItems}
-        keyExtractor={(entry) => entry.key}
+        data={filteredItems}
+        keyExtractor={(item) => item.id}
         numColumns={2}
         ListHeaderComponent={header}
         ListEmptyComponent={emptyState}
@@ -158,20 +158,15 @@ export default function ItemCatalog({
         ItemSeparatorComponent={RowGap}
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item: entry }) =>
-          entry.kind === "ad" ? (
-            <NativeAdCard ad={entry.ad} />
-          ) : (
-            <OutfitCard
-              outfit={entry.item}
-              isFavorite={favorites.includes(entry.item.id)}
-              onToggleFavorite={toggleFavorite}
-              onPress={() => onOpenItem(entry.item)}
-            />
-          )
-        }
+        renderItem={({ item }) => (
+          <OutfitCard
+            outfit={item}
+            isFavorite={favorites.includes(item.id)}
+            onToggleFavorite={toggleFavorite}
+            onPress={() => onOpenItem(item)}
+          />
+        )}
       />
-      <AdBanner />
     </SafeAreaView>
   );
 }

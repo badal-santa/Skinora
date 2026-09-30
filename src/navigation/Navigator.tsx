@@ -12,6 +12,7 @@ import OutfitDetailsScreen from "../screens/OutfitDetailsScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import AllEmotesScreen from "../screens/AllEmotesScreen";
 import EmoteDetailsScreen from "../screens/EmoteDetailsScreen";
+import LanguageScreen from "../screens/LanguageScreen";
 import type { RootStackParamList } from "./types";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -41,6 +42,7 @@ export default function Navigator() {
       <Stack.Screen name="Emotes" component={AllEmotesScreen} />
       <Stack.Screen name="EmoteDetails" component={EmoteDetailsScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="Language" component={LanguageScreen} />
     </Stack.Navigator>
   );
 }
