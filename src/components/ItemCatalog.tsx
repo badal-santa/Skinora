@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "./Text";
 import OutfitCard, { type Outfit, type OutfitPiece } from "./OutfitCard";
 import ScreenHeader from "./ScreenHeader";
+import PromoAdCard from "./PromoAdCard";
 import { label, useT } from "../i18n/language";
 import type { Strings } from "../i18n/translations";
 import { colors } from "../theme/colors";
@@ -112,6 +113,7 @@ export default function ItemCatalog({
           );
         }}
       />
+      <PromoAdCard style={{ paddingHorizontal: 20, marginBottom: 20 }} />
     </View>
   );
 

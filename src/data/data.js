@@ -30,38 +30,15 @@ export const categories = [
     popOut: true,
     route: "Emotes",
   },
-  {
-    id: "skins",
-    title: "ACCESSORIES",
-    subtitle: "Complete your look",
-    image: require("../../assets/images/home/acc.png"),
-    accent: colors.neon.pink,
-    popOut: true,
-    imageScale: 0.8, // square, edge-to-edge artwork
-    route: "Accessories",
-  },
-];
-
-/**
- * Filters by clothing piece (matched against `outfit.type`).
- * @type {import("../components/OutfitCard").OutfitPiece[]}
- */
-export const outfitPieceFilters = ["Jacket", "Top", "Pants", "Shorts"];
-
-/** Filters by style (matched against `outfit.category`). */
-export const outfitStyleFilters = [
-  "Streetwear",
-  "Casual",
-  "Anime",
-  "Fantasy",
-  "Cyberpunk",
 ];
 
 /**
  * Everything wearable. Split into `outfits` and `accessories` below.
+ * Fill `itemId` with the item's catalog ID — it's what users reveal and
+ * copy on the Scratch & Get ID screen. Empty shows "ID coming soon".
  * @type {import("../components/OutfitCard").Outfit[]}
  */
-const wardrobe = [
+export const wardrobe = [
   {
     id: "1",
     name: "Neon Street",
@@ -70,6 +47,7 @@ const wardrobe = [
     image: require("../../assets/images/home/neon.png"),
     accent: colors.neon.cyan,
     type: "Look",
+    itemId: "",
   },
   {
     id: "2",
@@ -79,6 +57,7 @@ const wardrobe = [
     image: require("../../assets/images/home/CyberDrip.png"),
     accent: colors.neon.purple,
     type: "Look",
+    itemId: "",
   },
   {
     id: "3",
@@ -88,6 +67,7 @@ const wardrobe = [
     image: require("../../assets/images/home/ShadowKnight.png"),
     accent: colors.neon.violet,
     type: "Look",
+    itemId: "",
   },
   {
     id: "4",
@@ -97,6 +77,7 @@ const wardrobe = [
     image: require("../../assets/images/home/GoldenVibe.png"),
     accent: colors.neon.gold,
     type: "Look",
+    itemId: "",
   },
   {
     id: "5",
@@ -106,6 +87,7 @@ const wardrobe = [
     image: require("../../assets/images/home/DreamCasual.png"),
     accent: colors.neon.green,
     type: "Look",
+    itemId: "",
   },
   {
     id: "6",
@@ -115,6 +97,7 @@ const wardrobe = [
     image: require("../../assets/images/home/AnimeLegend.png"),
     accent: colors.neon.cyan,
     type: "Look",
+    itemId: "",
   },
 
   // Individual pieces
@@ -126,6 +109,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Jackets/jacket-01.png"),
     accent: colors.neon.purple,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "jacket-02",
@@ -135,6 +119,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Jackets/jacket-02.png"),
     accent: colors.neon.gold,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "jacket-03",
@@ -144,6 +129,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Jackets/jacket-03.png"),
     accent: colors.neon.green,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "jacket-04",
@@ -153,6 +139,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Jackets/jacket-04.png"),
     accent: colors.neon.blue,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "jacket-05",
@@ -162,6 +149,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Jackets/jacket-05.png"),
     accent: colors.neon.red,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "blue-tech-cap",
@@ -171,6 +159,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/blue-tech-cap.png"),
     accent: colors.neon.blue,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "crimson-demon-cap",
@@ -180,6 +169,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/crimson-demon-cap.png"),
     accent: colors.neon.red,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "cyan-phantom-cap",
@@ -189,6 +179,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/cyan-phantom-cap.png"),
     accent: colors.neon.cyan,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "golden-crown-cap",
@@ -198,6 +189,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/golden-crown-cap.png"),
     accent: colors.neon.gold,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "ice-blue-cap",
@@ -207,6 +199,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/ice-blue-cap.png"),
     accent: colors.neon.blue,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "inferno-cap",
@@ -216,6 +209,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/inferno-cap.png"),
     accent: colors.neon.red,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "pink-kitty-cap",
@@ -225,6 +219,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/pink-kitty-cap.png"),
     accent: colors.neon.pink,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "purple-neon-hood",
@@ -234,6 +229,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/purple-neon-hood.png"),
     accent: colors.neon.purple,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "royal-crystal-cap",
@@ -243,6 +239,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/royal-crystal-cap.png"),
     accent: colors.neon.gold,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "toxic-green-hood",
@@ -252,6 +249,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/toxic-green-hood.png"),
     accent: colors.neon.green,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "violet-cat-ear-cap",
@@ -261,6 +259,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/violet-cat-ear-cap.png"),
     accent: colors.neon.purple,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "white-star-cap",
@@ -270,6 +269,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Cap/white-star-cap.png"),
     accent: colors.neon.red,
     type: "Cap",
+    itemId: "",
   },
   {
     id: "shoe-01",
@@ -279,6 +279,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-01.png"),
     accent: colors.neon.purple,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-02",
@@ -288,6 +289,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-02.png"),
     accent: colors.neon.gold,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-03",
@@ -297,6 +299,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-03.png"),
     accent: colors.neon.green,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-04",
@@ -306,6 +309,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-04.png"),
     accent: colors.neon.blue,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-05",
@@ -315,6 +319,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-05.png"),
     accent: colors.neon.red,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-06",
@@ -324,6 +329,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-06.png"),
     accent: colors.neon.violet,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-07",
@@ -333,6 +339,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-07.png"),
     accent: colors.neon.pink,
     type: "Shoes",
+    itemId: "",
   },
   {
     id: "shoe-08",
@@ -342,6 +349,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/Shoes/shoe-08.png"),
     accent: colors.neon.blue,
     type: "Shoes",
+    itemId: "",
   },
 
   // 3D clothes
@@ -353,6 +361,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_01_skinny_blue_jeans.png"),
     accent: colors.neon.blue,
     type: "Pants",
+    itemId: "",
   },
   {
     id: "clothes3d-02",
@@ -362,6 +371,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_02_baggy_black_jeans.png"),
     accent: colors.neon.silver,
     type: "Pants",
+    itemId: "",
   },
   {
     id: "clothes3d-03",
@@ -371,6 +381,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_03_denim_shorts.png"),
     accent: colors.neon.cyan,
     type: "Shorts",
+    itemId: "",
   },
   {
     id: "clothes3d-04",
@@ -380,6 +391,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_04_basketball_shorts.png"),
     accent: colors.neon.red,
     type: "Shorts",
+    itemId: "",
   },
   {
     id: "clothes3d-05",
@@ -389,6 +401,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_05_white_heart_tee.png"),
     accent: colors.neon.red,
     type: "Top",
+    itemId: "",
   },
   {
     id: "clothes3d-06",
@@ -398,6 +411,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_06_striped_polo.png"),
     accent: colors.neon.blue,
     type: "Top",
+    itemId: "",
   },
   {
     id: "clothes3d-07",
@@ -407,6 +421,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_07_green_flannel.png"),
     accent: colors.neon.green,
     type: "Top",
+    itemId: "",
   },
   {
     id: "clothes3d-08",
@@ -416,6 +431,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_08_hawaiian_shirt.png"),
     accent: colors.neon.cyan,
     type: "Top",
+    itemId: "",
   },
   {
     id: "clothes3d-09",
@@ -425,6 +441,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_09_biker_jacket.png"),
     accent: colors.neon.silver,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "clothes3d-10",
@@ -434,6 +451,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_10_varsity_jacket.png"),
     accent: colors.neon.red,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "clothes3d-11",
@@ -443,6 +461,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_11_colorblock_windbreaker.png"),
     accent: colors.neon.purple,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "clothes3d-12",
@@ -452,6 +471,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_12_gray_zip_hoodie.png"),
     accent: colors.neon.silver,
     type: "Jacket",
+    itemId: "",
   },
   {
     id: "clothes3d-13",
@@ -461,6 +481,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_13_cream_knit_sweater.png"),
     accent: colors.neon.gold,
     type: "Top",
+    itemId: "",
   },
   {
     id: "clothes3d-14",
@@ -470,6 +491,7 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_14_olive_cargo_shorts.png"),
     accent: colors.neon.green,
     type: "Shorts",
+    itemId: "",
   },
   {
     id: "clothes3d-15",
@@ -479,16 +501,160 @@ const wardrobe = [
     image: require("../../assets/images/Outifits/clothes3d_15_striped_track_pants.png"),
     accent: colors.neon.silver,
     type: "Pants",
+    itemId: "",
+  },
+  // Hairstyles (Outfits → Dynamic Hairstyles)
+  {
+    id: "hair-01",
+    name: "Crimson Spikes",
+    category: "Anime",
+    tag: "HOT",
+    image: require("../../assets/images/hairs/hair_01_black_red.png"),
+    accent: colors.neon.red,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-02",
+    name: "Silver Frost",
+    category: "Fantasy",
+    tag: "RARE",
+    image: require("../../assets/images/hairs/hair_02_silver_white.png"),
+    accent: colors.neon.silver,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-03",
+    name: "Midnight Blue",
+    category: "Streetwear",
+    tag: "NEW",
+    image: require("../../assets/images/hairs/hair_03_black_blue.png"),
+    accent: colors.neon.blue,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-04",
+    name: "Golden Flow",
+    category: "Casual",
+    tag: "POPULAR",
+    image: require("../../assets/images/hairs/hair_04_golden_blonde.png"),
+    accent: colors.neon.gold,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-05",
+    name: "Shadow Violet",
+    category: "Cyberpunk",
+    tag: "TRENDING",
+    image: require("../../assets/images/hairs/hair_05_black_purple.png"),
+    accent: colors.neon.purple,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-06",
+    name: "Purple Ponytail",
+    category: "Anime",
+    tag: "NEW",
+    image: require("../../assets/images/hairs/hair_06_purple_ponytail.png"),
+    accent: colors.neon.violet,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-07",
+    name: "Silver Topknot",
+    category: "Fantasy",
+    tag: "RARE",
+    image: require("../../assets/images/hairs/hair_07_silver_topknot.png"),
+    accent: colors.neon.silver,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-08",
+    name: "Ember Tie",
+    category: "Streetwear",
+    tag: "HOT",
+    image: require("../../assets/images/hairs/hair_08_black_red_tied.png"),
+    accent: colors.neon.red,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-09",
+    name: "Honey Bun",
+    category: "Casual",
+    tag: "POPULAR",
+    image: require("../../assets/images/hairs/hair_09_brown_gold_tied.png"),
+    accent: colors.neon.gold,
+    type: "Hair",
+    itemId: "",
+  },
+  {
+    id: "hair-10",
+    name: "Galaxy Spikes",
+    category: "Anime",
+    tag: "TRENDING",
+    image: require("../../assets/images/hairs/hair_10_blue_purple_spiky.png"),
+    accent: colors.neon.cyan,
+    type: "Hair",
+    itemId: "",
   },
 ];
 
 /** Accessory item types — shown on the Accessories screen, not Outfits. */
 const ACCESSORY_TYPES = ["Cap", "Shoes"];
 
-/** Full looks and clothing (Outfits screen). */
-export const outfits = wardrobe.filter(
-  (item) => !ACCESSORY_TYPES.includes(item.type),
-);
+/**
+ * Outfits → Categories screen, grouped by piece. Title and tagline come
+ * from translations (`outfitFlow.groups[id]`). `cover` is the card art;
+ * without one, the first item of `types` is shown. A group with no items
+ * yet shows as "coming soon".
+ * @type {{ id: "tops" | "jackets" | "pants" | "hats" | "hair" | "accessories"; types: import("../components/OutfitCard").OutfitType[]; accent: string; cover?: import("react-native").ImageSourcePropType }[]}
+ */
+export const outfitCategories = [
+  {
+    id: "tops",
+    types: ["Top"],
+    accent: colors.neon.green,
+    cover: require("../../assets/images/categories/core-collection.png"),
+  },
+  {
+    id: "jackets",
+    types: ["Jacket"],
+    accent: colors.neon.blue,
+    cover: require("../../assets/images/categories/next-gen-gear.png"),
+  },
+  {
+    id: "pants",
+    types: ["Pants", "Shorts"],
+    accent: colors.neon.gold,
+    cover: require("../../assets/images/categories/mission-pants.png"),
+  },
+  {
+    id: "hats",
+    types: ["Cap"],
+    accent: colors.neon.red,
+    cover: require("../../assets/images/categories/player-hats.png"),
+  },
+  // Add hairstyle items to `wardrobe` with `type: "Hair"`.
+  {
+    id: "hair",
+    types: ["Hair"],
+    accent: colors.neon.violet,
+    cover: require("../../assets/images/categories/dynamic-hairstyles.png"),
+  },
+  {
+    id: "accessories",
+    types: ["Shoes"],
+    accent: colors.neon.pink,
+    cover: require("../../assets/images/categories/elite-accessories.png"),
+  },
+];
 
 /** Caps and shoes (Accessories screen). */
 export const accessories = wardrobe.filter((item) =>
@@ -903,8 +1069,6 @@ const featuredCopy = {
   outfits: { tag: "FEATURED", subtitle: "Stylish fits for\nevery look." },
   characters: { tag: "NEW DROP", subtitle: "Meet your next\nstyle icon." },
   emotes: { tag: "TRENDING", subtitle: "Show off your\nvibe in style." },
-  // Item collage, not a character — keep it inside the slide.
-  skins: { tag: "HOT", subtitle: "Caps, chains, bags\n& more.", art: "inside" },
 };
 
 /** Slides for the Home screen's featured carousel. */
@@ -919,3 +1083,70 @@ export const featuredSlides = categories.map((category) => ({
   route: category.route,
   art: featuredCopy[category.id]?.art,
 }));
+
+/**
+ * Sounds screen. Put audio files in assets/sounds/ and list them here.
+ * @type {{ id: string; name: string; file: number; accent: string }[]}
+ */
+export const sounds = [
+  {
+    id: "sound-01",
+    name: "Button Tap",
+    file: require("../../assets/sounds/01_button_tap.wav"),
+    accent: colors.neon.cyan,
+  },
+  {
+    id: "sound-02",
+    name: "Category Open",
+    file: require("../../assets/sounds/02_category_open.wav"),
+    accent: colors.neon.blue,
+  },
+  {
+    id: "sound-03",
+    name: "Item Select",
+    file: require("../../assets/sounds/03_item_select.wav"),
+    accent: colors.neon.violet,
+  },
+  {
+    id: "sound-04",
+    name: "Item Equip",
+    file: require("../../assets/sounds/04_item_equip.wav"),
+    accent: colors.neon.green,
+  },
+  {
+    id: "sound-05",
+    name: "Favorite",
+    file: require("../../assets/sounds/05_favorite.wav"),
+    accent: colors.neon.pink,
+  },
+  {
+    id: "sound-06",
+    name: "Copy Success",
+    file: require("../../assets/sounds/06_copy_success.wav"),
+    accent: colors.neon.cyan,
+  },
+  {
+    id: "sound-07",
+    name: "Scratch Start",
+    file: require("../../assets/sounds/07_scratch_start.wav"),
+    accent: colors.neon.silver,
+  },
+  {
+    id: "sound-08",
+    name: "Scratch Complete",
+    file: require("../../assets/sounds/08_scratch_complete.wav"),
+    accent: colors.neon.yellow,
+  },
+  {
+    id: "sound-09",
+    name: "Rare Reveal",
+    file: require("../../assets/sounds/09_rare_reveal.wav"),
+    accent: colors.neon.purple,
+  },
+  {
+    id: "sound-10",
+    name: "Legendary Reveal",
+    file: require("../../assets/sounds/10_legendary_reveal.wav"),
+    accent: colors.neon.gold,
+  },
+];

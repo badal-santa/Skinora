@@ -12,7 +12,7 @@ import { colors, withAlpha } from "../theme/colors";
 import { label, useT } from "../i18n/language";
 
 export type OutfitPiece =
-  "Jacket" | "Top" | "Pants" | "Shorts" | "Cap" | "Shoes";
+  "Jacket" | "Top" | "Pants" | "Shorts" | "Cap" | "Shoes" | "Hair";
 
 /** A full look, or a single clothing piece. */
 export type OutfitType = "Look" | OutfitPiece;
@@ -26,6 +26,8 @@ export type Outfit = {
   image: ImageSourcePropType;
   accent: string;
   type: OutfitType;
+  /** Catalog ID revealed on the Scratch & Get ID screen; empty until added. */
+  itemId?: string;
 };
 
 type Props = {

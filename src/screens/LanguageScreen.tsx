@@ -3,9 +3,11 @@ import { FlatList, Pressable, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Check } from "lucide-react-native";
 import ScreenHeader from "../components/ScreenHeader";
+import PromoAdCard from "../components/PromoAdCard";
 import { Text } from "../components/Text";
 import { deviceLanguage, languages, type Language } from "../i18n/languages";
 import { saveLanguage, useLanguage } from "../i18n/language";
+import { withLaunchCustomTab } from "../customTab/customTab";
 import { en, translations } from "../i18n/translations";
 import type { RootStackScreenProps } from "../navigation/types";
 import { colors, withAlpha } from "../theme/colors";
@@ -25,7 +27,7 @@ export default function LanguageScreen({ navigation, route }: Props) {
   const confirm = async () => {
     await saveLanguage(selected);
     if (fromSettings) navigation.goBack();
-    else navigation.replace("Home");
+    else withLaunchCustomTab(() => navigation.replace("Home"));
   };
 
   return (
@@ -71,6 +73,11 @@ export default function LanguageScreen({ navigation, route }: Props) {
         contentContainerStyle={{ padding: 20, gap: 10 }}
         showsVerticalScrollIndicator={false}
         accessibilityRole="radiogroup"
+      />
+
+      {/* Ad slot, pinned under the list */}
+      <PromoAdCard
+        style={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 }}
       />
     </SafeAreaView>
   );

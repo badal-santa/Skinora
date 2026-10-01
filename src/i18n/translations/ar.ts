@@ -62,6 +62,150 @@ export const ar: Strings = {
     unsave: (name: string) => `إزالة ${name} من المفضلة`,
   },
 
+  outfitFlow: {
+    categoriesTitle: "فئات الأزياء",
+    categoriesSubtitle: "اختر فئة لاستكشافها",
+    clickHere: "اضغط هنا",
+    groups: {
+      tops: {
+        title: "المجموعة الأساسية",
+        subtitle: "مصممة للاعبين القياديين.",
+      },
+      jackets: {
+        title: "عتاد الجيل الجديد",
+        subtitle: "تبدأ المغامرة بالعتاد المناسب.",
+      },
+      pants: {
+        title: "بناطيل المهام",
+        subtitle: "كل خطوة، إعلان عن هدف.",
+      },
+      hats: {
+        title: "قبعات اللاعبين",
+        subtitle: "دافع عن أسلوبك، واكسب يومك.",
+      },
+      hair: {
+        title: "تسريحات ديناميكية",
+        subtitle: "مصممة للحركات الجريئة والإطلالات الجريئة.",
+      },
+      accessories: {
+        title: "إكسسوارات النخبة",
+        subtitle: "كل قطعة، مستوى جديد من الأناقة.",
+      },
+    },
+    categoryComingSoon: "قريباً",
+    categoryComingSoonMessage: "عناصر جديدة في الطريق. تحقق مرة أخرى قريباً!",
+    count: (n: number) => {
+      if (n === 1) return "زي واحد";
+      if (n === 2) return "زيان";
+      if (n >= 3 && n <= 10) return `${n} أزياء`;
+      return `${n} زياً`;
+    },
+    collectionSubtitle: (n: number) => {
+      if (n === 1) return "زي واحد في هذه المجموعة";
+      if (n === 2) return "زيان في هذه المجموعة";
+      if (n >= 3 && n <= 10) return `${n} أزياء في هذه المجموعة`;
+      return `${n} زياً في هذه المجموعة`;
+    },
+    letsGoTitle: "جاهز لتجربة هذه الإطلالة؟",
+    letsGoMessage: "شاهد الزي عن قرب وافتح معرّف العنصر.",
+    letsGo: "هيا بنا",
+    getId: "احصل على المعرّف",
+    scratchTitle: "اكشط واحصل على المعرّف",
+    scratchSubtitle: "اكشط البطاقة لكشف معرّف العنصر",
+    scratchHint: "اكشط هنا",
+    idLabel: "معرّف العنصر",
+    copy: "نسخ المعرّف",
+    copied: "تم النسخ!",
+    comingSoon: "المعرّف قريباً",
+    comingSoonMessage: "نضيف معرّف هذا الزي الآن. عاود الزيارة قريباً!",
+    howToUse: "ابحث عن هذا المعرّف في متجر الأفاتار داخل اللعبة للعثور على العنصر.",
+  },
+
+  calculator: {
+    homeTitle: "الحاسبة",
+    homeSubtitle: "Robux ⇄ USD في ثوانٍ",
+    title: "حاسبة Robux",
+    subtitle: "قدّر قيم Robux وUSD",
+    tabRobuxToUsd: "Robux → $",
+    tabUsdToRobux: "$ → Robux",
+    tabFee: "رسوم البيع",
+    robuxAmount: "كمية Robux",
+    usdAmount: "المبلغ بـ USD",
+    itemPrice: "سعر العنصر بـ Robux",
+    purchaseCost: "تكلفة الشراء",
+    devexValue: "قيمة السحب (DevEx)",
+    robuxYouGet: "Robux التي ستحصل عليها",
+    youReceive: (percent: number) => `ستستلم (${percent}%)`,
+    marketplaceFee: (percent: number) => `رسوم المتجر (${percent}%)`,
+    disclaimer:
+      "تقديرات فقط، بناءً على الأسعار القياسية. تختلف الأسعار الفعلية حسب المنصة والمنطقة. هذا التطبيق غير رسمي ولا يمكنه منحك Robux.",
+    inputAmount: "أدخل المبلغ",
+    liveRate: "السعر الحالي",
+    quickSelect: "اختيار سريع",
+    resultTag: "نتيجة الحساب",
+    resultTitle: "القيمة التقديرية",
+    estimated: "قيمة تقديرية",
+    infoTitle: "معلومات مهمة",
+  },
+
+  calcHub: {
+    title: "كل الحاسبات",
+    tileTag: "حاسبة",
+    tapToOpen: "اضغط للفتح",
+    robuxUsd: "Robux ⇄ USD",
+    basic: "أساسي",
+    pro: "برو",
+    elite: "إيليت",
+    tierSubtitle: "قارن بين خطط بريميوم",
+    months: "الأشهر",
+    monthsOf: (tier: string) => `أشهر ${tier}`,
+    totalRobux: "إجمالي Robux",
+    sameRobuxAs: (tier: string) => `نفس Robux الخاصة بـ ${tier}`,
+    monthsValue: (n: string) => `${n} أشهر`,
+    costWith: (tier: string) => `التكلفة مع ${tier}`,
+    difference: "فرق السعر",
+    perMonth: (robux: string, usd: string) => `${robux} Robux / شهر · ${usd}`,
+  },
+  games: {
+    homeTitle: "الألعاب",
+    homeSubtitle: "العب فورًا",
+    title: "الألعاب",
+    subtitle: "العب فورًا دون الحاجة إلى تنزيل",
+    featured: "مميز",
+    play: "العب",
+    playNow: "العب الآن",
+    emptyTitle: "الألعاب قريبًا",
+    emptyMessage: "ألعاب جديدة في الطريق. عد قريبًا!",
+    playLabel: (title: string) => `العب ${title}`,
+  },
+
+  sounds: {
+    homeTitle: "الأصوات",
+    homeSubtitle: "استكشف المؤثرات الصوتية المفضلة",
+    title: "الأصوات",
+    subtitle: "اضغط على صوت لتشغيله",
+    getSound: "احصل على هذا المؤثر الصوتي",
+    saving: "جارٍ الحفظ…",
+    saved: "تم الحفظ في الموسيقى",
+    volume: "مستوى الصوت",
+    play: "تشغيل",
+    pause: "إيقاف مؤقت",
+    previous: "الصوت السابق",
+    next: "الصوت التالي",
+    permissionTitle: "مطلوب الوصول إلى التخزين",
+    permissionMessage: (app: string) =>
+      `اسمح لـ ${app} بحفظ الأصوات على جهازك.`,
+    failedTitle: "فشل التنزيل",
+    failedMessage: "تعذّر حفظ هذا الصوت. يرجى المحاولة مرة أخرى.",
+    emptyTitle: "الأصوات قريبًا",
+    emptyMessage: "أصوات جديدة في الطريق. عد قريبًا!",
+  },
+
+  promo: {
+    ad: "إعلان",
+    cta: "اعرف المزيد",
+  },
+
   characters: {
     title: "الشخصيات",
     subtitle: "اكتشف إطلالتك المميزة التالية",
@@ -143,6 +287,7 @@ export const ar: Strings = {
     Shorts: "شورت",
     Cap: "قبعة",
     Shoes: "حذاء",
+    Hair: "الشعر",
     Streetwear: "ستريت وير",
     Casual: "كاجوال",
     Anime: "أنمي",

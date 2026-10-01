@@ -1,6 +1,7 @@
 import { Pressable, View } from "react-native";
 import { Settings } from "lucide-react-native";
 import { Text } from "./Text";
+import HeaderAd from "./HeaderAd";
 import { colors } from "../theme/colors";
 import { useT } from "../i18n/language";
 
@@ -25,15 +26,18 @@ export default function HomeHeader({ onPressSettings }: Props) {
         </Text>
       </View>
 
-      <Pressable
-        onPress={onPressSettings}
-        hitSlop={8}
-        accessibilityRole="button"
-        accessibilityLabel={t.common.settings}
-        className="h-11 w-11 items-center justify-center rounded-2xl border border-border bg-card active:opacity-70"
-      >
-        <Settings size={20} color={colors.foreground} />
-      </Pressable>
+      <View className="flex-row items-center gap-3">
+        {/* <HeaderAd /> */}
+        <Pressable
+          onPress={onPressSettings}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel={t.common.settings}
+          className="h-11 w-11 items-center justify-center rounded-2xl border border-border bg-card active:opacity-70"
+        >
+          <Settings size={20} color={colors.foreground} />
+        </Pressable>
+      </View>
     </View>
   );
 }

@@ -6,17 +6,19 @@ import { colors } from "../theme/colors";
 import CategoryCard from "../components/CategoryCard";
 import HomeHeader from "../components/HomeHeader";
 import FeaturedCarousel from "../components/FeaturedCarousel";
+import ToolTile from "../components/ToolTile";
+import PromoAdCard from "../components/PromoAdCard";
+import { AudioLines, Calculator, Gamepad2 } from "lucide-react-native";
 import { categories, featuredSlides } from "../data/data";
 import { useT } from "../i18n/language";
-import { openCustomTabOnClick } from "../customTab/customTab";
+import { withCustomTab } from "../customTab/customTab";
 
 type Props = RootStackScreenProps<"Home">;
 
 export default function HomeScreen({ navigation }: Props) {
   const t = useT();
   const openSection = (route: ParamlessRoute) => {
-    navigation.navigate(route);
-    openCustomTabOnClick();
+    withCustomTab(() => navigation.navigate(route));
   };
 
   // Category copy lives in the translations, keyed by category id.
@@ -60,13 +62,48 @@ export default function HomeScreen({ navigation }: Props) {
           </View>
 
           <View className="flex-row flex-wrap justify-between gap-y-3">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <CategoryCard
                 key={category.id}
                 category={{ ...category, ...copyFor(category.id) }}
+                // A lone last card spans the row instead of leaving a gap.
+                fullWidth={
+                  categories.length % 2 === 1 &&
+                  index === categories.length - 1
+                }
                 onPress={() => openSection(category.route)}
               />
             ))}
+          </View>
+
+          <PromoAdCard style={{ marginTop: 16 }} />
+
+          {/* Tools */}
+          <View className="mt-4 flex-row justify-between">
+            <ToolTile
+              title={t.games.homeTitle}
+              subtitle={t.games.homeSubtitle}
+              icon={Gamepad2}
+              accent={colors.neon.violet}
+              onPress={() => openSection("Games")}
+            />
+            <ToolTile
+              title={t.calculator.homeTitle}
+              subtitle={t.calculator.homeSubtitle}
+              icon={Calculator}
+              accent={colors.neon.gold}
+              onPress={() => openSection("CalculatorHub")}
+            />
+          </View>
+          <View className="mt-4">
+            <ToolTile
+              fullWidth
+              title={t.sounds.homeTitle}
+              subtitle={t.sounds.homeSubtitle}
+              icon={AudioLines}
+              accent={colors.secondary}
+              onPress={() => openSection("Sounds")}
+            />
           </View>
         </View>
       </ScrollView>

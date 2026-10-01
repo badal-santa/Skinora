@@ -2,9 +2,10 @@ import { ScrollView, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CharacterCard from "../components/CharacterCard";
 import ScreenHeader from "../components/ScreenHeader";
+import PromoAdCard from "../components/PromoAdCard";
 import { characters } from "../data/data";
 import { useT } from "../i18n/language";
-import { openCustomTabOnClick } from "../customTab/customTab";
+import { withCustomTab } from "../customTab/customTab";
 import type { RootStackScreenProps } from "../navigation/types";
 
 type Props = RootStackScreenProps<"Characters">;
@@ -28,18 +29,23 @@ export default function AllCharactersScreen({ navigation }: Props) {
 
         {/* Character grid */}
         <View className="flex-row flex-wrap justify-between gap-y-4 px-5">
-          {characters.map((character) => (
+          {characters.map((character, index) => [
             <CharacterCard
               key={character.id}
               character={character}
               onPress={() => {
-                navigation.navigate("CharacterDetails", {
-                  characterId: character.id,
-                });
-                openCustomTabOnClick();
+                withCustomTab(() =>
+                  navigation.navigate("CharacterDetails", {
+                    characterId: character.id,
+                  }),
+                );
               }}
-            />
-          ))}
+            />,
+            // Full-width ad row after the second row of cards.
+            index === 3 ? (
+              <PromoAdCard key="promo" style={{ width: "100%" }} />
+            ) : null,
+          ])}
         </View>
       </ScrollView>
     </SafeAreaView>

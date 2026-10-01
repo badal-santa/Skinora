@@ -2,10 +2,11 @@ import { FlatList, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EmoteCard, { type Emote } from "../components/EmoteCard";
 import ScreenHeader from "../components/ScreenHeader";
+import PromoAdCard from "../components/PromoAdCard";
 import { Text } from "../components/Text";
 import { emotes } from "../data/data";
 import { useT } from "../i18n/language";
-import { openCustomTabOnClick } from "../customTab/customTab";
+import { withCustomTab } from "../customTab/customTab";
 import type { RootStackScreenProps } from "../navigation/types";
 import { colors } from "../theme/colors";
 
@@ -56,22 +57,30 @@ export default function AllEmotesScreen({ navigation }: Props) {
         ItemSeparatorComponent={RowGap}
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item: row }) => (
-          <View className="flex-row justify-between px-5">
-            {row.map((emote) => (
-              <EmoteCard
-                key={emote.id}
-                emote={emote}
-                onPress={() => {
-                  navigation.navigate("EmoteDetails", { emoteId: emote.id });
-                  openCustomTabOnClick();
-                }}
-              />
-            ))}
-            {/* Keep a short last row aligned to the grid */}
-            {Array.from({ length: COLUMNS - row.length }, (_, i) => (
-              <View key={`spacer-${i}`} className="w-[31.5%]" />
-            ))}
+        renderItem={({ item: row, index }) => (
+          <View>
+            <View className="flex-row justify-between px-5">
+              {row.map((emote) => (
+                <EmoteCard
+                  key={emote.id}
+                  emote={emote}
+                  onPress={() => {
+                    withCustomTab(() =>
+                      navigation.navigate("EmoteDetails", {
+                        emoteId: emote.id,
+                      }),
+                    );
+                  }}
+                />
+              ))}
+              {/* Keep a short last row aligned to the grid */}
+              {Array.from({ length: COLUMNS - row.length }, (_, i) => (
+                <View key={`spacer-${i}`} className="w-[31.5%]" />
+              ))}
+            </View>
+            {index === 1 && (
+              <PromoAdCard style={{ marginTop: 12, paddingHorizontal: 20 }} />
+            )}
           </View>
         )}
       />

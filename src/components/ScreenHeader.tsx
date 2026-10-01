@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Pressable, View } from "react-native";
 import { Text } from "./Text";
+import HeaderAd from "./HeaderAd";
 import { ChevronLeft } from "lucide-react-native";
 import { colors } from "../theme/colors";
 import { useT } from "../i18n/language";
@@ -51,6 +52,10 @@ export default function ScreenHeader({
         )}
       </View>
 
+      {/* Small header ad, like the reference app's top-right icon */}
+      <View className="ml-3">
+        <HeaderAd />
+      </View>
       {right && <View className="ml-3">{right}</View>}
     </View>
   );

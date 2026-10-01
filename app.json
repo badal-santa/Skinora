@@ -31,9 +31,10 @@
       [
         "expo-media-library",
         {
-          "savePhotosPermission": "Allow Skinora to save outfit images to your photos.",
+          "savePhotosPermission": "Allow Skinora to save outfit images and sounds to your device.",
           "granularPermissions": [
-            "photo"
+            "photo",
+            "audio"
           ]
         }
       ],
@@ -117,6 +118,13 @@
               "RNFBRemoteConfig"
             ]
           }
+        }
+      ],
+      [
+        "expo-audio",
+        {
+          "recordAudioAndroid": false,
+          "enableBackgroundPlayback": false
         }
       ]
     ]

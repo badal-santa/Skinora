@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -11,6 +11,8 @@ import {
   View,
 } from "react-native";
 import { Text } from "./Text";
+import PromoAdCard from "./PromoAdCard";
+import HeaderAd from "./HeaderAd";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import * as MediaLibrary from "expo-media-library";
@@ -22,7 +24,13 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { Check, ChevronLeft, Download, Share2 } from "lucide-react-native";
+import {
+  Check,
+  ChevronLeft,
+  Download,
+  Share2,
+  type LucideIcon,
+} from "lucide-react-native";
 import { colors, withAlpha } from "../theme/colors";
 import { APP_NAME } from "../config/app";
 import { useT } from "../i18n/language";
@@ -33,6 +41,15 @@ type Props = {
   image: ImageSourcePropType;
   accent: string;
   onBack: () => void;
+  /**
+   * Main button, e.g. "Get ID". When set, Download shrinks to an icon
+   * button beside it.
+   */
+  primaryAction?: {
+    label: string;
+    icon: LucideIcon;
+    onPress: () => void;
+  };
 };
 
 const fill = {
@@ -54,10 +71,13 @@ export default function DownloadableDetails({
   image,
   accent,
   onBack,
+  primaryAction,
 }: Props) {
   const insets = useSafeAreaInsets();
   const t = useT();
   const [download, setDownload] = useState<DownloadState>("idle");
+  // The bottom bar grows when an ad shows; keep the hero clear of it.
+  const [barHeight, setBarHeight] = useState(90 + insets.bottom);
 
   const enter = useSharedValue(0);
   const float = useSharedValue(0);
@@ -151,12 +171,28 @@ export default function DownloadableDetails({
     }
   };
 
+  const downloadIcon = (color: string) =>
+    download === "saving" ? (
+      <ActivityIndicator color={color} />
+    ) : download === "saved" ? (
+      <Check size={18} color={color} strokeWidth={3} />
+    ) : (
+      <Download size={18} color={color} strokeWidth={2.6} />
+    );
+
+  const downloadLabel =
+    download === "saving"
+      ? t.details.saving
+      : download === "saved"
+        ? t.details.saved
+        : t.details.download;
+
   return (
     <View className="flex-1 bg-background">
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       {/* Hero stage */}
-      <View style={{ flex: 1, paddingBottom: 90 + insets.bottom }}>
+      <View style={{ flex: 1, paddingBottom: barHeight }}>
         <LinearGradient
           colors={[
             withAlpha(accent, 0.34),
@@ -256,64 +292,122 @@ export default function DownloadableDetails({
           <ChevronLeft size={22} color={colors.foreground} />
         </Pressable>
 
-        <Pressable
-          onPress={share}
-          accessibilityRole="button"
-          accessibilityLabel={t.common.share}
-          className="h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/50"
-        >
-          <Share2 size={18} color={colors.foreground} />
-        </Pressable>
+        <View className="flex-row items-center gap-3">
+          <HeaderAd />
+          <Pressable
+            onPress={share}
+            accessibilityRole="button"
+            accessibilityLabel={t.common.share}
+            className="h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-black/50"
+          >
+            <Share2 size={18} color={colors.foreground} />
+          </Pressable>
+        </View>
       </View>
 
       {/* Action bar */}
       <View
-        className="absolute bottom-0 left-0 right-0 flex-row gap-3 border-t border-border bg-background/95 px-5 pt-4"
+        className="absolute bottom-0 left-0 right-0 border-t border-border bg-background/95 px-5 pt-4"
         style={{ paddingBottom: insets.bottom + 12 }}
+        onLayout={(e) => setBarHeight(e.nativeEvent.layout.height)}
       >
-        <Pressable
-          onPress={saveToPhotos}
-          disabled={download === "saving"}
-          accessibilityRole="button"
-          accessibilityLabel={t.details.downloadLabel}
-          accessibilityState={{ busy: download === "saving" }}
-          className="h-14 flex-1 overflow-hidden rounded-2xl active:opacity-90"
-          style={{
-            shadowColor: accent,
-            shadowOpacity: 0.55,
-            shadowRadius: 16,
-            shadowOffset: { width: 0, height: 4 },
-            elevation: 8,
-          }}
-        >
-          <LinearGradient
-            colors={[accent, withAlpha(accent, 0.75)]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {download === "saving" ? (
-              <ActivityIndicator color={colors.background} />
-            ) : download === "saved" ? (
-              <Check size={18} color={colors.background} strokeWidth={3} />
-            ) : (
-              <Download size={18} color={colors.background} strokeWidth={2.6} />
-            )}
-            <Text className="ml-2 text-base font-extrabold text-background">
-              {download === "saving"
-                ? t.details.saving
-                : download === "saved"
-                  ? t.details.saved
-                  : t.details.download}
-            </Text>
-          </LinearGradient>
-        </Pressable>
+        <PromoAdCard compact style={{ marginBottom: 12 }} />
+        <View className="flex-row gap-3">
+        {primaryAction ? (
+          <>
+            <Pressable
+              onPress={saveToPhotos}
+              disabled={download === "saving"}
+              accessibilityRole="button"
+              accessibilityLabel={t.details.downloadLabel}
+              accessibilityState={{ busy: download === "saving" }}
+              className="h-14 w-14 items-center justify-center rounded-2xl border active:opacity-70"
+              style={{
+                borderColor: withAlpha(accent, 0.5),
+                backgroundColor: withAlpha(accent, 0.1),
+              }}
+            >
+              {downloadIcon(accent)}
+            </Pressable>
+            <GradientButton
+              accent={accent}
+              label={primaryAction.label}
+              accessibilityLabel={primaryAction.label}
+              onPress={primaryAction.onPress}
+              icon={
+                <primaryAction.icon
+                  size={18}
+                  color={colors.background}
+                  strokeWidth={2.6}
+                />
+              }
+            />
+          </>
+        ) : (
+          <GradientButton
+            accent={accent}
+            label={downloadLabel}
+            accessibilityLabel={t.details.downloadLabel}
+            onPress={saveToPhotos}
+            busy={download === "saving"}
+            icon={downloadIcon(colors.background)}
+          />
+        )}
+        </View>
       </View>
     </View>
+  );
+}
+
+type GradientButtonProps = {
+  accent: string;
+  label: string;
+  accessibilityLabel: string;
+  icon: ReactNode;
+  onPress: () => void;
+  busy?: boolean;
+};
+
+function GradientButton({
+  accent,
+  label,
+  accessibilityLabel,
+  icon,
+  onPress,
+  busy = false,
+}: GradientButtonProps) {
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={busy}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityState={{ busy }}
+      className="h-14 flex-1 overflow-hidden rounded-2xl active:opacity-90"
+      style={{
+        shadowColor: accent,
+        shadowOpacity: 0.55,
+        shadowRadius: 16,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 8,
+      }}
+    >
+      <LinearGradient
+        colors={[accent, withAlpha(accent, 0.75)]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {icon}
+        <Text className="ml-2 text-base font-extrabold text-background">
+          {label}
+        </Text>
+      </LinearGradient>
+    </Pressable>
   );
 }

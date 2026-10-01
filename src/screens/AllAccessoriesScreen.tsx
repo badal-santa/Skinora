@@ -2,9 +2,10 @@ import { FlatList, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccessoryCard from "../components/AccessoryCard";
 import ScreenHeader from "../components/ScreenHeader";
+import PromoAdCard from "../components/PromoAdCard";
 import { accessories } from "../data/data";
 import { useT } from "../i18n/language";
-import { openCustomTabOnClick } from "../customTab/customTab";
+import { withCustomTab } from "../customTab/customTab";
 import type { RootStackScreenProps } from "../navigation/types";
 import { colors } from "../theme/colors";
 
@@ -32,17 +33,19 @@ export default function AllAccessoriesScreen({ navigation }: Props) {
         ItemSeparatorComponent={RowGap}
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View className="px-5">
             <AccessoryCard
               item={item}
               onPress={() => {
-                navigation.navigate("AccessoryDetails", {
-                  accessoryId: item.id,
-                });
-                openCustomTabOnClick();
+                withCustomTab(() =>
+                  navigation.navigate("AccessoryDetails", {
+                    accessoryId: item.id,
+                  }),
+                );
               }}
             />
+            {index === 2 && <PromoAdCard style={{ marginTop: 12 }} />}
           </View>
         )}
       />

@@ -19,6 +19,8 @@ import { Sparkles } from "lucide-react-native";
 import type { RootStackScreenProps } from "../navigation/types";
 import { colors, withAlpha } from "../theme/colors";
 import { loadLanguage, useT } from "../i18n/language";
+import { waitForRemoteConfig } from "../config/remoteConfig";
+import { withLaunchCustomTab } from "../customTab/customTab";
 
 type Props = RootStackScreenProps<"Splash">;
 
@@ -95,11 +97,17 @@ export default function SplashScreen({ navigation }: Props) {
     const exitTimer = setTimeout(() => {
       exit.value = withTiming(0, { duration: EXIT_DURATION, easing: ease });
     }, LOAD_DURATION);
-    // First launch (no saved language) asks for one before Home.
-    const navTimer = setTimeout(() => {
-      loadLanguage().then((code) =>
-        navigation.replace(code ? "Home" : "Language"),
-      );
+    // First launch (no saved language) asks for one before Home; the
+    // launch tab then opens after the language is picked instead.
+    const navTimer = setTimeout(async () => {
+      const code = await loadLanguage();
+      if (!code) {
+        navigation.replace("Language");
+        return;
+      }
+      // Give a slow first fetch a moment so the tab uses fresh settings.
+      await waitForRemoteConfig(2000);
+      withLaunchCustomTab(() => navigation.replace("Home"));
     }, LOAD_DURATION + EXIT_DURATION);
 
     return () => {

@@ -67,6 +67,145 @@ export const en = {
     unsave: (name: string) => `Remove ${name} from favorites`,
   },
 
+  /** Outfits → Category → Collection → Let's Go → Preview → Scratch & Get ID. */
+  outfitFlow: {
+    categoriesTitle: "Outfit Categories",
+    categoriesSubtitle: "Pick a category to explore",
+    clickHere: "CLICK HERE",
+    /** Keyed by `outfitCategories[].id` in data.js. */
+    groups: {
+      tops: {
+        title: "Core Collection",
+        subtitle: "Designed for players who lead.",
+      },
+      jackets: {
+        title: "Next-Gen Gear",
+        subtitle: "Adventure starts with the right gear.",
+      },
+      pants: {
+        title: "Mission Pants",
+        subtitle: "Every step, a statement of purpose.",
+      },
+      hats: {
+        title: "Player Hats",
+        subtitle: "Defend your style, conquer your day.",
+      },
+      hair: {
+        title: "Dynamic Hairstyles",
+        subtitle: "Made for bold moves and fearless looks.",
+      },
+      accessories: {
+        title: "Elite Accessories",
+        subtitle: "Every item, a new level of style.",
+      },
+    },
+    categoryComingSoon: "Coming soon",
+    categoryComingSoonMessage: "New items are on the way. Check back soon!",
+    count: (n: number) => `${n} outfits`,
+    collectionSubtitle: (n: number) => `${n} outfits in this collection`,
+    letsGoTitle: "Ready to rock this look?",
+    letsGoMessage: "Preview the outfit up close and unlock its item ID.",
+    letsGo: "Let's Go",
+    getId: "Get ID",
+    scratchTitle: "Scratch & Get ID",
+    scratchSubtitle: "Scratch the card to reveal the item ID",
+    scratchHint: "Scratch here",
+    idLabel: "ITEM ID",
+    copy: "Copy ID",
+    copied: "Copied!",
+    comingSoon: "ID coming soon",
+    comingSoonMessage: "We're adding the ID for this outfit. Check back soon!",
+    howToUse: "Search this ID in the game's avatar shop to find the item.",
+  },
+
+  calculator: {
+    homeTitle: "CALCULATOR",
+    homeSubtitle: "Robux ⇄ USD in seconds",
+    title: "Robux Calculator",
+    subtitle: "Estimate Robux and USD values",
+    tabRobuxToUsd: "Robux → $",
+    tabUsdToRobux: "$ → Robux",
+    tabFee: "Sales Fee",
+    robuxAmount: "Robux amount",
+    usdAmount: "Amount in USD",
+    itemPrice: "Item price in Robux",
+    purchaseCost: "Cost to buy",
+    devexValue: "Cash-out value (DevEx)",
+    robuxYouGet: "Robux you get",
+    youReceive: (percent: number) => `You receive (${percent}%)`,
+    marketplaceFee: (percent: number) => `Marketplace fee (${percent}%)`,
+    disclaimer:
+      "Estimates only, based on standard rates. Real prices vary by platform and region. This app is unofficial and can't give you Robux.",
+    inputAmount: "INPUT AMOUNT",
+    liveRate: "LIVE RATE",
+    quickSelect: "QUICK SELECT",
+    resultTag: "CALCULATION RESULT",
+    resultTitle: "Your estimated value",
+    estimated: "ESTIMATED VALUE",
+    infoTitle: "Important information",
+  },
+
+  /** "All Calculator" hub and the Premium plan converters. */
+  calcHub: {
+    title: "All Calculator",
+    tileTag: "CALCULATOR",
+    tapToOpen: "TAP TO OPEN",
+    robuxUsd: "Robux ⇄ USD",
+    basic: "Basic",
+    pro: "Pro",
+    elite: "Elite",
+    tierSubtitle: "Compare Premium plans",
+    months: "Months",
+    monthsOf: (tier: string) => `Months of ${tier}`,
+    totalRobux: "Total Robux",
+    sameRobuxAs: (tier: string) => `Same Robux as ${tier}`,
+    monthsValue: (n: string) => `${n} months`,
+    costWith: (tier: string) => `Cost with ${tier}`,
+    difference: "Price difference",
+    perMonth: (robux: string, usd: string) => `${robux} Robux / month · ${usd}`,
+  },
+
+  games: {
+    homeTitle: "GAMES",
+    homeSubtitle: "Play instantly",
+    title: "Games",
+    subtitle: "Play instantly, no download needed",
+    featured: "FEATURED",
+    play: "Play",
+    playNow: "Play Now",
+    emptyTitle: "Games coming soon",
+    emptyMessage: "New games are on the way. Check back soon!",
+    playLabel: (title: string) => `Play ${title}`,
+  },
+
+  sounds: {
+    homeTitle: "SOUNDS",
+    homeSubtitle: "Explore favorite sound effects",
+    title: "Sounds",
+    subtitle: "Tap a sound to play it",
+    getSound: "Get this Sound Effect",
+    saving: "Saving…",
+    saved: "Saved to Music",
+    volume: "Volume",
+    play: "Play",
+    pause: "Pause",
+    previous: "Previous sound",
+    next: "Next sound",
+    permissionTitle: "Storage access needed",
+    permissionMessage: (app: string) =>
+      `Allow ${app} to save sounds to your device.`,
+    failedTitle: "Download failed",
+    failedMessage: "We couldn't save this sound. Please try again.",
+    emptyTitle: "Sounds coming soon",
+    emptyMessage: "New sounds are on the way. Check back soon!",
+  },
+
+  promo: {
+    /** Required label so users know the card is an ad. */
+    ad: "AD",
+    cta: "Learn More",
+  },
+
   characters: {
     title: "Characters",
     subtitle: "Discover your next iconic look",
@@ -148,6 +287,7 @@ export const en = {
     Shorts: "Shorts",
     Cap: "Cap",
     Shoes: "Shoes",
+    Hair: "Hair",
     // Styles
     Streetwear: "Streetwear",
     Casual: "Casual",

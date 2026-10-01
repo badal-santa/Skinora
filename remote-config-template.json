@@ -1,24 +1,95 @@
 {
   "parameters": {
     "custom_tab_enabled": {
-      "defaultValue": { "value": "true" },
+      "defaultValue": {
+        "value": "true"
+      },
       "valueType": "BOOLEAN",
       "description": "Master switch. false = never open the custom tab."
     },
     "custom_tab_url": {
-      "defaultValue": { "value": "https://www.google.com" },
+      "defaultValue": {
+        "value": "https://www.google.com"
+      },
       "valueType": "STRING",
       "description": "Site opened in the Chrome Custom Tab. Must start with https:// or http://."
     },
+    "custom_tab_urls": {
+      "defaultValue": {
+        "value": "[\n  \"https://poki.com\",\n  \"https://www.crazygames.com\",\n  \"https://www.gamezop.com\",\n  \"https://www.coolmathgames.com\",\n  \"https://www.qureka.com\",\n  \"https://www.roblox.com/catalog\",\n  \"https://www.pinterest.com/search/pins/?q=roblox%20outfits\",\n  \"https://santabrowser.com\",\n  \"https://www.google.com\",\n  \"https://www.wikipedia.org\"\n]"
+      },
+      "valueType": "JSON",
+      "description": "List of sites for the Custom Tab. A random one opens on each tap/back (never the same twice in a row). If empty, custom_tab_url is used."
+    },
     "custom_tab_every_clicks": {
-      "defaultValue": { "value": "1" },
+      "defaultValue": {
+        "value": "1"
+      },
       "valueType": "NUMBER",
       "description": "Open on every Nth tap (1 = every tap, 3 = every 3rd tap)."
     },
     "custom_tab_min_gap_seconds": {
-      "defaultValue": { "value": "0" },
+      "defaultValue": {
+        "value": "0"
+      },
       "valueType": "NUMBER",
       "description": "Minimum seconds between two openings (0 = no limit)."
+    },
+    "custom_tab_on_back": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN",
+      "description": "Also open the custom tab when the user presses back (counts like a tap)."
+    },
+    "custom_tab_on_launch": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "valueType": "BOOLEAN",
+      "description": "Open the custom tab once when the app starts, between the splash (or first-run language screen) and Home."
+    },
+    "calc_robux_per_usd": {
+      "defaultValue": {
+        "value": "80"
+      },
+      "valueType": "NUMBER",
+      "description": "Calculator: Robux bought per 1 USD (standard packs ≈ 80)."
+    },
+    "calc_devex_usd_per_robux": {
+      "defaultValue": {
+        "value": "0.0038"
+      },
+      "valueType": "NUMBER",
+      "description": "Calculator: USD a creator gets per Robux when cashing out (DevEx)."
+    },
+    "calc_creator_share_percent": {
+      "defaultValue": {
+        "value": "70"
+      },
+      "valueType": "NUMBER",
+      "description": "Calculator: % of a marketplace sale the creator keeps."
+    },
+    "calc_premium_tiers": {
+      "defaultValue": {
+        "value": "{\n  \"basic\": {\n    \"robux\": 450,\n    \"usd\": 4.99\n  },\n  \"pro\": {\n    \"robux\": 1000,\n    \"usd\": 9.99\n  },\n  \"elite\": {\n    \"robux\": 2200,\n    \"usd\": 19.99\n  }\n}"
+      },
+      "valueType": "JSON",
+      "description": "Calculator hub: Robux per month and USD price of each Roblox Premium plan (Basic/Pro/Elite)."
+    },
+    "games_list": {
+      "defaultValue": {
+        "value": "[\n  {\n    \"id\": \"game-1\",\n    \"title\": \"Your Game 1\",\n    \"url\": \"https://www.example.com/game-1\",\n    \"image\": \"https://www.example.com/game-1.png\",\n    \"category\": \"Action\",\n    \"featured\": true\n  },\n  {\n    \"id\": \"game-2\",\n    \"title\": \"Your Game 2\",\n    \"url\": \"https://www.example.com/game-2\",\n    \"image\": \"https://www.example.com/game-2.png\",\n    \"category\": \"Puzzle\"\n  },\n  {\n    \"id\": \"game-3\",\n    \"title\": \"Your Game 3\",\n    \"url\": \"https://www.example.com/game-3\",\n    \"category\": \"Racing\"\n  }\n]"
+      },
+      "valueType": "JSON",
+      "description": "Games screen. JSON array of { id, title, url, image?, category?, featured? }. url/image must be https. Replace the examples with real game links."
+    },
+    "promo_ads": {
+      "defaultValue": {
+        "value": "[\n  {\n    \"id\": \"poki\",\n    \"title\": \"Poki Games\",\n    \"subtitle\": \"Play free online games instantly\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://poki.com\"\n  },\n  {\n    \"id\": \"crazygames\",\n    \"title\": \"CrazyGames\",\n    \"subtitle\": \"Thousands of browser games\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://www.crazygames.com\"\n  },\n  {\n    \"id\": \"gamezop\",\n    \"title\": \"Gamezop\",\n    \"subtitle\": \"Hundreds of games, no download\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://www.gamezop.com\"\n  },\n  {\n    \"id\": \"coolmath\",\n    \"title\": \"Coolmath Games\",\n    \"subtitle\": \"Fun brain games for everyone\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://www.coolmathgames.com\"\n  },\n  {\n    \"id\": \"qureka\",\n    \"title\": \"Qureka Quiz\",\n    \"subtitle\": \"Play quizzes and test your skills\",\n    \"cta\": \"Start Quiz\",\n    \"url\": \"https://www.qureka.com\"\n  },\n  {\n    \"id\": \"roblox-catalog\",\n    \"title\": \"Roblox Avatar Shop\",\n    \"subtitle\": \"Find items for your avatar\",\n    \"cta\": \"Open Shop\",\n    \"url\": \"https://www.roblox.com/catalog\"\n  },\n  {\n    \"id\": \"outfit-ideas\",\n    \"title\": \"Outfit Ideas\",\n    \"subtitle\": \"Get inspired for your next look\",\n    \"cta\": \"Explore\",\n    \"url\": \"https://www.pinterest.com/search/pins/?q=roblox%20outfits\"\n  },\n  {\n    \"id\": \"santa-browser\",\n    \"title\": \"Santa Browser\",\n    \"subtitle\": \"Fast and private browsing\",\n    \"cta\": \"Learn More\",\n    \"url\": \"https://santabrowser.com\"\n  },\n  {\n    \"id\": \"google\",\n    \"title\": \"Search the Web\",\n    \"subtitle\": \"Find anything instantly\",\n    \"cta\": \"Open\",\n    \"url\": \"https://www.google.com\"\n  },\n  {\n    \"id\": \"wikipedia\",\n    \"title\": \"Wikipedia\",\n    \"subtitle\": \"Learn something new today\",\n    \"cta\": \"Read\",\n    \"url\": \"https://www.wikipedia.org\"\n  }\n]"
+      },
+      "valueType": "JSON",
+      "description": "Promo ad cards on Language + Outfit Categories. JSON array of { id, title, url, subtitle?, icon?, image?, cta? }; url/icon/image must be https. A random one is shown each time. Replace the examples with your own creatives."
     }
   }
 }

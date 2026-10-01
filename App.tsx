@@ -3,7 +3,7 @@ import * as NativeSplash from "expo-splash-screen";
 import { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import Navigator from "./src/navigation/Navigator";
-import { initRemoteConfig } from "./src/customTab/remoteConfig";
+import { initRemoteConfig } from "./src/config/remoteConfig";
 
 // Keep the black native splash up until the first screen has rendered,
 // then fade into the animated SplashScreen — no white flash in between.

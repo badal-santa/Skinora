@@ -38,6 +38,8 @@ export type Category = {
 type Props = {
   category: Category;
   onPress?: () => void;
+  /** Span the whole row instead of half (e.g. a lone last card). */
+  fullWidth?: boolean;
 };
 
 const FACE_HEIGHT = 186;
@@ -62,7 +64,11 @@ const cover = {
   height: "100%",
 } as const;
 
-export default function CategoryCard({ category, onPress }: Props) {
+export default function CategoryCard({
+  category,
+  onPress,
+  fullWidth = false,
+}: Props) {
   const {
     title,
     subtitle,
@@ -171,7 +177,7 @@ export default function CategoryCard({ category, onPress }: Props) {
       onLayout={onLayout}
       accessibilityRole="button"
       accessibilityLabel={`${title}. ${subtitle}`}
-      className="w-[48.2%]"
+      className={fullWidth ? "w-full" : "w-[48.2%]"}
     >
       <Animated.View
         style={[{ height: POP_HEIGHT + FACE_HEIGHT + DEPTH }, cardStyle]}

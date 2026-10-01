@@ -9,6 +9,7 @@ import {
 } from "lucide-react-native";
 import ScreenHeader from "../components/ScreenHeader";
 import SettingsRow from "../components/SettingsRow";
+import PromoAdCard from "../components/PromoAdCard";
 import { Text } from "../components/Text";
 import {
   APP_NAME,
@@ -99,6 +100,8 @@ export default function SettingsScreen({ navigation }: Props) {
           onPress={openPrivacyPolicy}
           accent={colors.neon.blue}
         />
+
+        <PromoAdCard style={{ marginTop: 8 }} />
 
         <Text className="mt-6 text-center text-xs text-subtle">
           {APP_NAME} v{APP_VERSION}
