@@ -53,6 +53,8 @@ export default function GamesScreen({ navigation }: Props) {
         onBack={() => navigation.goBack()}
       />
 
+      <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 20 }} />
+
       {featured && (
         <View className="mb-5 px-5">
           <FeaturedGame
@@ -68,7 +70,11 @@ export default function GamesScreen({ navigation }: Props) {
         </View>
       )}
 
-      <PromoAdCard style={{ paddingHorizontal: 20, marginBottom: 20 }} />
+      <PromoAdCard
+        at="afterFeatured"
+        isDefault
+        style={{ paddingHorizontal: 20, marginBottom: 20 }}
+      />
 
       {categories.length > 2 && (
         <FlatList
@@ -114,6 +120,9 @@ export default function GamesScreen({ navigation }: Props) {
         keyExtractor={(game) => game.id}
         numColumns={2}
         ListHeaderComponent={header}
+        ListFooterComponent={
+          <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 20 }} />
+        }
         ListEmptyComponent={
           games.length === 0 ? (
             <View className="items-center px-8 py-20">

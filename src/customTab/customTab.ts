@@ -1,7 +1,7 @@
 import { AppState, Platform } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import { colors } from "../theme/colors";
-import { getCustomTabConfig, onCustomTabConfig } from "../config/remoteConfig";
+import { getCustomTabConfig, onCustomTabConfig } from "../ads/ads";
 
 /**
  * If the app hasn't gone to the background this long after opening the
@@ -51,13 +51,17 @@ function warmUp(url: string) {
     .catch(() => {});
 }
 
-// New list from Remote Config → pick a fresh next site.
+// New settings from the ads backend → pick a fresh next site.
 onCustomTabConfig(() => prepareNext());
 
 /** Counts the click and decides whether this one should open the tab. */
-function shouldOpen() {
-  const { enabled, urls, everyClicks, minGapMs } = getCustomTabConfig();
+function shouldOpen(trigger: Trigger) {
+  const { enabled, urls, everyClicks, minGapMs, onTap, onBack } =
+    getCustomTabConfig();
   if (!enabled || urls.length === 0) return false;
+  // Each trigger has its own switch in the dashboard; switched-off ones
+  // don't count towards "every Nth".
+  if (trigger === "tap" ? !onTap : !onBack) return false;
 
   clicks += 1;
   if (clicks % everyClicks !== 0) return false;
@@ -87,16 +91,22 @@ function waitForReturn() {
   });
 }
 
+/** What caused the navigation. */
+export type Trigger = "tap" | "back";
+
 /**
- * Runs a click's action (usually a navigation). When Remote Config says
- * so, the configured site opens in a Chrome Custom Tab first
- * (SFSafariViewController on iOS), and the action runs once the user
+ * Runs a click's action (usually a navigation). When the dashboard's Custom
+ * Tab settings say so, the configured site opens in a Chrome Custom Tab
+ * first (SFSafariViewController on iOS), and the action runs once the user
  * closes it, so they land on the new screen.
  */
-export async function withCustomTab(action: () => void) {
+export async function withCustomTab(
+  action: () => void,
+  trigger: Trigger = "tap",
+) {
   // Ignore taps while a tab is opening or open.
   if (busy) return;
-  if (!shouldOpen()) {
+  if (!shouldOpen(trigger)) {
     action();
     return;
   }
@@ -104,8 +114,8 @@ export async function withCustomTab(action: () => void) {
 }
 
 /**
- * App-open tab: shown once between the splash and Home when
- * `custom_tab_on_launch` is on. Doesn't count as a click.
+ * App-open tab: shown once between the splash and Home when "On app
+ * launch" is on in the dashboard. Doesn't count as a click.
  */
 export async function withLaunchCustomTab(action: () => void) {
   const { enabled, onLaunch, urls } = getCustomTabConfig();

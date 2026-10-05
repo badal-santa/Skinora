@@ -209,6 +209,7 @@ export default function SoundsScreen({ navigation }: Props) {
     <View>
       <ScreenHeader title={t.sounds.title} onBack={() => navigation.goBack()} />
       <View className="mx-5 h-px bg-border" />
+      <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginTop: 16 }} />
 
       {/* Hero: character between two waveforms */}
       <View className="mt-4 h-[210px] flex-row items-center justify-center">
@@ -351,7 +352,11 @@ export default function SoundsScreen({ navigation }: Props) {
         </Pressable>
       </View>
 
-      <PromoAdCard style={{ paddingHorizontal: 20, marginTop: 20 }} />
+      <PromoAdCard
+        at="afterPlayer"
+        isDefault
+        style={{ paddingHorizontal: 20, marginTop: 20 }}
+      />
 
       <View className="h-6" />
     </View>
@@ -365,6 +370,9 @@ export default function SoundsScreen({ navigation }: Props) {
         data={sounds}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={header}
+        ListFooterComponent={
+          <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 20 }} />
+        }
         ItemSeparatorComponent={() => <View className="h-2.5" />}
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}

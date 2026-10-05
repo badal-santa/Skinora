@@ -56,6 +56,7 @@ export default function CalculatorScreen({ navigation }: Props) {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+          <PromoAdCard at="top" style={{ marginBottom: 16 }} />
           <ModeTabs
             tabs={modeTabs(t)}
             active={mode}
@@ -77,11 +78,12 @@ export default function CalculatorScreen({ navigation }: Props) {
             accent={accent}
             strings={t.calculator}
           />
-          <PromoAdCard style={{ marginTop: 18 }} />
+          <PromoAdCard at="aboveDisclaimer" isDefault style={{ marginTop: 18 }} />
           <InfoNote
             title={t.calculator.infoTitle}
             message={t.calculator.disclaimer}
           />
+          <PromoAdCard at="bottom" style={{ marginTop: 18 }} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

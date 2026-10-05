@@ -72,6 +72,8 @@ export default function TierCalculatorScreen({ navigation, route }: Props) {
         keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
       >
+        <PromoAdCard at="top" style={{ marginBottom: 16 }} />
+
         {/* Plans being compared */}
         <View className="flex-row gap-3">
           {[
@@ -169,7 +171,7 @@ export default function TierCalculatorScreen({ navigation, route }: Props) {
           ))}
         </View>
 
-        <PromoAdCard style={{ marginTop: 16 }} />
+        <PromoAdCard at="afterResults" isDefault style={{ marginTop: 16 }} />
 
         {/* Disclaimer */}
         <View className="mt-5 flex-row rounded-2xl border border-border bg-surface p-3.5">
@@ -178,6 +180,8 @@ export default function TierCalculatorScreen({ navigation, route }: Props) {
             {t.calculator.disclaimer}
           </Text>
         </View>
+
+        <PromoAdCard at="bottom" style={{ marginTop: 16 }} />
       </ScrollView>
     </SafeAreaView>
   );

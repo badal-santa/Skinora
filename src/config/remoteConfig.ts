@@ -11,26 +11,11 @@ import {
  * Firebase Remote Config keys (create these in the Firebase console →
  * Remote Config). The defaults below apply until the first fetch succeeds,
  * or when Firebase isn't available (e.g. Expo Go).
+ *
+ * Ads and the Custom Tab are managed in the admin dashboard instead
+ * (see src/ads/ads.ts).
  */
 const DEFAULTS = {
-  /** Master switch for opening the custom tab on clicks. */
-  custom_tab_enabled: false,
-  /** Site to open. Must be http(s). */
-  custom_tab_url: "",
-  /**
-   * JSON array of sites; a random one opens each time (never the same one
-   * twice in a row). When empty, `custom_tab_url` is used.
-   */
-  custom_tab_urls: "[]",
-  /** Open on every Nth click (1 = every click). */
-  custom_tab_every_clicks: 1,
-  /** Never open more often than this (0 = no limit). */
-  custom_tab_min_gap_seconds: 0,
-  /** Also open the custom tab on back presses (counts like a click). */
-  custom_tab_on_back: true,
-  /** Open the custom tab once at launch, between splash and Home. */
-  custom_tab_on_launch: true,
-
   /** Calculator: Robux bought per 1 USD (standard packs ≈ 80). */
   calc_robux_per_usd: 80,
   /** Calculator: USD a creator gets per Robux when cashing out (DevEx). */
@@ -50,22 +35,6 @@ const DEFAULTS = {
    */
   games_list: "[]",
 
-  /**
-   * Promo ad cards (Language + Outfit Categories screens): JSON array of
-   * { id?, title, url, subtitle?, icon?, image?, cta? } — url/icon/image https.
-   * One is picked at random each time a card is shown.
-   */
-  promo_ads: "[]",
-};
-
-export type CustomTabConfig = {
-  enabled: boolean;
-  /** Sites to rotate through; empty when none is configured. */
-  urls: string[];
-  everyClicks: number;
-  minGapMs: number;
-  onBack: boolean;
-  onLaunch: boolean;
 };
 
 export type TierId = "basic" | "pro" | "elite";
@@ -90,25 +59,9 @@ export type Game = {
   featured?: boolean;
 };
 
-export type PromoAd = {
-  id: string;
-  title: string;
-  /** Opened in a Custom Tab when the card is tapped. */
-  url: string;
-  subtitle?: string;
-  /** Small square logo next to the title. */
-  icon?: string;
-  /** Wide banner creative (about 2:1). */
-  image?: string;
-  /** Button label; a translated default is used without one. */
-  cta?: string;
-};
-
 type Config = {
-  customTab: CustomTabConfig;
   calculator: CalculatorRates;
   games: Game[];
-  promoAds: PromoAd[];
 };
 type Key = keyof typeof DEFAULTS;
 type Getter = (key: Key) => ReturnType<typeof getValue> | undefined;
@@ -178,76 +131,9 @@ function parseTiers(json: string): Record<TierId, PremiumTier> {
   return { basic: tier("basic"), pro: tier("pro"), elite: tier("elite") };
 }
 
-const optionalText = (value: unknown) =>
-  typeof value === "string" && value.trim() ? value.trim() : undefined;
-
-/** Parses `promo_ads`, dropping entries without a title or valid link. */
-function parsePromoAds(json: string): PromoAd[] {
-  try {
-    const list: unknown = JSON.parse(json);
-    if (!Array.isArray(list)) return [];
-    return list.flatMap((entry, index): PromoAd[] => {
-      if (!entry || typeof entry !== "object") return [];
-      const e = entry as Record<string, unknown>;
-      const title = optionalText(e.title);
-      if (!title || !isHttpUrl(e.url)) return [];
-      return [
-        {
-          id: optionalText(e.id) ?? `promo-${index}`,
-          title,
-          url: e.url.trim(),
-          subtitle: optionalText(e.subtitle),
-          icon: isHttpUrl(e.icon) ? e.icon.trim() : undefined,
-          image: isHttpUrl(e.image) ? e.image.trim() : undefined,
-          cta: optionalText(e.cta),
-        },
-      ];
-    });
-  } catch {
-    console.warn("[remote-config] promo_ads is not valid JSON");
-    return [];
-  }
-}
-
-/** `custom_tab_urls` (valid http(s) links only), else `custom_tab_url`. */
-function parseTabUrls(listJson: string, single: string): string[] {
-  let list: unknown = [];
-  try {
-    list = JSON.parse(listJson);
-  } catch {
-    console.warn("[remote-config] custom_tab_urls is not valid JSON");
-  }
-  const urls = Array.isArray(list)
-    ? [...new Set(list.filter(isHttpUrl).map((u) => u.trim()))]
-    : [];
-  return urls.length ? urls : isHttpUrl(single) ? [single.trim()] : [];
-}
-
 /** Reads the active values, falling back to `DEFAULTS` per key. */
 function read(get: Getter): Config {
-  const everyClicks =
-    get("custom_tab_every_clicks")?.asNumber() ??
-    DEFAULTS.custom_tab_every_clicks;
-  const minGapSeconds =
-    get("custom_tab_min_gap_seconds")?.asNumber() ??
-    DEFAULTS.custom_tab_min_gap_seconds;
-
   return {
-    customTab: {
-      enabled:
-        get("custom_tab_enabled")?.asBoolean() ?? DEFAULTS.custom_tab_enabled,
-      urls: parseTabUrls(
-        get("custom_tab_urls")?.asString() ?? DEFAULTS.custom_tab_urls,
-        get("custom_tab_url")?.asString() ?? DEFAULTS.custom_tab_url,
-      ),
-      everyClicks: Math.max(1, Math.round(everyClicks) || 1),
-      minGapMs: Math.max(0, minGapSeconds || 0) * 1000,
-      onBack:
-        get("custom_tab_on_back")?.asBoolean() ?? DEFAULTS.custom_tab_on_back,
-      onLaunch:
-        get("custom_tab_on_launch")?.asBoolean() ??
-        DEFAULTS.custom_tab_on_launch,
-    },
     calculator: {
       robuxPerUsd: positive(get, "calc_robux_per_usd"),
       devexUsdPerRobux: positive(get, "calc_devex_usd_per_robux"),
@@ -257,9 +143,6 @@ function read(get: Getter): Config {
       ),
     },
     games: parseGames(get("games_list")?.asString() ?? DEFAULTS.games_list),
-    promoAds: parsePromoAds(
-      get("promo_ads")?.asString() ?? DEFAULTS.promo_ads,
-    ),
   };
 }
 
@@ -279,13 +162,6 @@ const subscribe = (listener: () => void) => {
   };
 };
 
-export const getCustomTabConfig = () => config.customTab;
-
-/** Called with the new config whenever Remote Config values change. */
-export function onCustomTabConfig(listener: (config: CustomTabConfig) => void) {
-  return subscribe(() => listener(config.customTab));
-}
-
 /** Calculator rates; re-renders when they change in Remote Config. */
 export function useCalculatorRates() {
   return useSyncExternalStore(subscribe, () => config.calculator);
@@ -296,32 +172,11 @@ export function useGames() {
   return useSyncExternalStore(subscribe, () => config.games);
 }
 
-/** Promo ad creatives; re-renders when they change in Remote Config. */
-export function usePromoAds() {
-  return useSyncExternalStore(subscribe, () => config.promoAds);
-}
-
 let started = false;
-let markReady: () => void = () => {};
-const ready = new Promise<void>((resolve) => {
-  markReady = resolve;
-});
-
-/**
- * Resolves once the launch fetch has finished (or failed), or after
- * `timeoutMs` — whichever comes first. Lets the splash use fresh values.
- */
-export function waitForRemoteConfig(timeoutMs: number) {
-  return Promise.race([
-    ready,
-    new Promise<void>((resolve) => setTimeout(resolve, timeoutMs)),
-  ]);
-}
-
 /**
  * Fetches Remote Config once at launch and keeps it in sync with
- * real-time updates, so a new link from the console applies without
- * waiting for the next app start.
+ * real-time updates, so changes in the console apply without waiting for
+ * the next app start.
  */
 export async function initRemoteConfig() {
   if (started) return;
@@ -337,7 +192,6 @@ export async function initRemoteConfig() {
     refresh(); // cached values from the last session
     await fetchAndActivate(remoteConfig);
     refresh();
-    markReady();
 
     onConfigUpdate(remoteConfig, {
       next: () => {
@@ -349,6 +203,5 @@ export async function initRemoteConfig() {
   } catch (error) {
     // No native Firebase (Expo Go) or no network — keep the defaults.
     console.warn("[remote-config] unavailable:", error);
-    markReady();
   }
 }

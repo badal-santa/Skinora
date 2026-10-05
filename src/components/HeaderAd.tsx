@@ -9,7 +9,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { Megaphone } from "lucide-react-native";
 import { Text } from "./Text";
-import { usePromoAds, type PromoAd } from "../config/remoteConfig";
+import { useRoute } from "@react-navigation/native";
+import { usePlacementAds, type PromoAd } from "../ads/ads";
 import { openInCustomTab } from "../customTab/customTab";
 import { useT } from "../i18n/language";
 import { colors, withAlpha } from "../theme/colors";
@@ -19,12 +20,13 @@ const BADGE = colors.neon.red;
 
 /**
  * Small round ad for screen headers (like the reference app's top-right
- * icon): a random `promo_ads` creative's logo with an "AD" badge, gently
- * pulsing. Tapping opens its link in a Custom Tab. Renders nothing without
- * ads.
+ * icon): a creative's logo with an "AD" badge, gently pulsing. Placement
+ * "<RouteName>.header", controlled from the admin dashboard. Tapping opens
+ * its link in a Custom Tab. Renders nothing when there's no ad.
  */
 export default function HeaderAd() {
-  const ads = usePromoAds();
+  const route = useRoute();
+  const ads = usePlacementAds(`${route.name}.header`);
   const [seed] = useState(Math.random);
   const ad = ads.length ? ads[Math.floor(seed * ads.length)] : undefined;
 

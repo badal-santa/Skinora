@@ -24,11 +24,17 @@ export default function AllAccessoriesScreen({ navigation }: Props) {
         data={accessories}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
-          <ScreenHeader
-            title={t.accessories.title}
-            subtitle={t.accessories.subtitle}
-            onBack={() => navigation.goBack()}
-          />
+          <View>
+            <ScreenHeader
+              title={t.accessories.title}
+              subtitle={t.accessories.subtitle}
+              onBack={() => navigation.goBack()}
+            />
+            <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
+          </View>
+        }
+        ListFooterComponent={
+          <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 12 }} />
         }
         ItemSeparatorComponent={RowGap}
         contentContainerStyle={{ paddingBottom: 32 }}
@@ -45,7 +51,9 @@ export default function AllAccessoriesScreen({ navigation }: Props) {
                 );
               }}
             />
-            {index === 2 && <PromoAdCard style={{ marginTop: 12 }} />}
+            {index === 2 && (
+              <PromoAdCard at="after3" isDefault style={{ marginTop: 12 }} />
+            )}
           </View>
         )}
       />

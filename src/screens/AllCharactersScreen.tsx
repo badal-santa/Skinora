@@ -27,6 +27,8 @@ export default function AllCharactersScreen({ navigation }: Props) {
           onBack={() => navigation.goBack()}
         />
 
+        <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
+
         {/* Character grid */}
         <View className="flex-row flex-wrap justify-between gap-y-4 px-5">
           {characters.map((character, index) => [
@@ -43,10 +45,17 @@ export default function AllCharactersScreen({ navigation }: Props) {
             />,
             // Full-width ad row after the second row of cards.
             index === 3 ? (
-              <PromoAdCard key="promo" style={{ width: "100%" }} />
+              <PromoAdCard
+                key="promo"
+                at="afterRow2"
+                isDefault
+                style={{ width: "100%" }}
+              />
             ) : null,
           ])}
         </View>
+
+        <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 16 }} />
       </ScrollView>
     </SafeAreaView>
   );

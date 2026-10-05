@@ -19,7 +19,7 @@ import { Sparkles } from "lucide-react-native";
 import type { RootStackScreenProps } from "../navigation/types";
 import { colors, withAlpha } from "../theme/colors";
 import { loadLanguage, useT } from "../i18n/language";
-import { waitForRemoteConfig } from "../config/remoteConfig";
+import { waitForAds } from "../ads/ads";
 import { withLaunchCustomTab } from "../customTab/customTab";
 
 type Props = RootStackScreenProps<"Splash">;
@@ -106,7 +106,7 @@ export default function SplashScreen({ navigation }: Props) {
         return;
       }
       // Give a slow first fetch a moment so the tab uses fresh settings.
-      await waitForRemoteConfig(2000);
+      await waitForAds(2000);
       withLaunchCustomTab(() => navigation.replace("Home"));
     }, LOAD_DURATION + EXIT_DURATION);
 

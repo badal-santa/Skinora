@@ -1,54 +1,5 @@
 {
   "parameters": {
-    "custom_tab_enabled": {
-      "defaultValue": {
-        "value": "true"
-      },
-      "valueType": "BOOLEAN",
-      "description": "Master switch. false = never open the custom tab."
-    },
-    "custom_tab_url": {
-      "defaultValue": {
-        "value": "https://www.google.com"
-      },
-      "valueType": "STRING",
-      "description": "Site opened in the Chrome Custom Tab. Must start with https:// or http://."
-    },
-    "custom_tab_urls": {
-      "defaultValue": {
-        "value": "[\n  \"https://poki.com\",\n  \"https://www.crazygames.com\",\n  \"https://www.gamezop.com\",\n  \"https://www.coolmathgames.com\",\n  \"https://www.qureka.com\",\n  \"https://www.roblox.com/catalog\",\n  \"https://www.pinterest.com/search/pins/?q=roblox%20outfits\",\n  \"https://santabrowser.com\",\n  \"https://www.google.com\",\n  \"https://www.wikipedia.org\"\n]"
-      },
-      "valueType": "JSON",
-      "description": "List of sites for the Custom Tab. A random one opens on each tap/back (never the same twice in a row). If empty, custom_tab_url is used."
-    },
-    "custom_tab_every_clicks": {
-      "defaultValue": {
-        "value": "1"
-      },
-      "valueType": "NUMBER",
-      "description": "Open on every Nth tap (1 = every tap, 3 = every 3rd tap)."
-    },
-    "custom_tab_min_gap_seconds": {
-      "defaultValue": {
-        "value": "0"
-      },
-      "valueType": "NUMBER",
-      "description": "Minimum seconds between two openings (0 = no limit)."
-    },
-    "custom_tab_on_back": {
-      "defaultValue": {
-        "value": "true"
-      },
-      "valueType": "BOOLEAN",
-      "description": "Also open the custom tab when the user presses back (counts like a tap)."
-    },
-    "custom_tab_on_launch": {
-      "defaultValue": {
-        "value": "true"
-      },
-      "valueType": "BOOLEAN",
-      "description": "Open the custom tab once when the app starts, between the splash (or first-run language screen) and Home."
-    },
     "calc_robux_per_usd": {
       "defaultValue": {
         "value": "80"
@@ -83,13 +34,6 @@
       },
       "valueType": "JSON",
       "description": "Games screen. JSON array of { id, title, url, image?, category?, featured? }. url/image must be https. Replace the examples with real game links."
-    },
-    "promo_ads": {
-      "defaultValue": {
-        "value": "[\n  {\n    \"id\": \"poki\",\n    \"title\": \"Poki Games\",\n    \"subtitle\": \"Play free online games instantly\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://poki.com\"\n  },\n  {\n    \"id\": \"crazygames\",\n    \"title\": \"CrazyGames\",\n    \"subtitle\": \"Thousands of browser games\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://www.crazygames.com\"\n  },\n  {\n    \"id\": \"gamezop\",\n    \"title\": \"Gamezop\",\n    \"subtitle\": \"Hundreds of games, no download\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://www.gamezop.com\"\n  },\n  {\n    \"id\": \"coolmath\",\n    \"title\": \"Coolmath Games\",\n    \"subtitle\": \"Fun brain games for everyone\",\n    \"cta\": \"Play Now\",\n    \"url\": \"https://www.coolmathgames.com\"\n  },\n  {\n    \"id\": \"qureka\",\n    \"title\": \"Qureka Quiz\",\n    \"subtitle\": \"Play quizzes and test your skills\",\n    \"cta\": \"Start Quiz\",\n    \"url\": \"https://www.qureka.com\"\n  },\n  {\n    \"id\": \"roblox-catalog\",\n    \"title\": \"Roblox Avatar Shop\",\n    \"subtitle\": \"Find items for your avatar\",\n    \"cta\": \"Open Shop\",\n    \"url\": \"https://www.roblox.com/catalog\"\n  },\n  {\n    \"id\": \"outfit-ideas\",\n    \"title\": \"Outfit Ideas\",\n    \"subtitle\": \"Get inspired for your next look\",\n    \"cta\": \"Explore\",\n    \"url\": \"https://www.pinterest.com/search/pins/?q=roblox%20outfits\"\n  },\n  {\n    \"id\": \"santa-browser\",\n    \"title\": \"Santa Browser\",\n    \"subtitle\": \"Fast and private browsing\",\n    \"cta\": \"Learn More\",\n    \"url\": \"https://santabrowser.com\"\n  },\n  {\n    \"id\": \"google\",\n    \"title\": \"Search the Web\",\n    \"subtitle\": \"Find anything instantly\",\n    \"cta\": \"Open\",\n    \"url\": \"https://www.google.com\"\n  },\n  {\n    \"id\": \"wikipedia\",\n    \"title\": \"Wikipedia\",\n    \"subtitle\": \"Learn something new today\",\n    \"cta\": \"Read\",\n    \"url\": \"https://www.wikipedia.org\"\n  }\n]"
-      },
-      "valueType": "JSON",
-      "description": "Promo ad cards on Language + Outfit Categories. JSON array of { id, title, url, subtitle?, icon?, image?, cta? }; url/icon/image must be https. A random one is shown each time. Replace the examples with your own creatives."
     }
   }
 }

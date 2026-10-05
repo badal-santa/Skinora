@@ -74,6 +74,7 @@ export default function ItemCatalog({
   const header = (
     <View>
       <ScreenHeader title={title} subtitle={subtitle} onBack={onBack} />
+      <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 20 }} />
 
       {/* Filters */}
       <FlatList
@@ -113,7 +114,11 @@ export default function ItemCatalog({
           );
         }}
       />
-      <PromoAdCard style={{ paddingHorizontal: 20, marginBottom: 20 }} />
+      <PromoAdCard
+        at="afterFilters"
+        isDefault
+        style={{ paddingHorizontal: 20, marginBottom: 20 }}
+      />
     </View>
   );
 
@@ -153,6 +158,9 @@ export default function ItemCatalog({
         numColumns={2}
         ListHeaderComponent={header}
         ListEmptyComponent={emptyState}
+        ListFooterComponent={
+          <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 20 }} />
+        }
         columnWrapperStyle={{
           justifyContent: "space-between",
           paddingHorizontal: 20,

@@ -72,6 +72,7 @@ export default function SettingsScreen({ navigation }: Props) {
       <View className="mx-5 h-px bg-border" />
 
       <ScrollView contentContainerStyle={{ padding: 20, gap: 12 }}>
+        <PromoAdCard at="top" style={{ marginBottom: 8 }} />
         <SettingsRow icon={Share2} label={t.settings.shareApp} onPress={shareApp} />
         <SettingsRow
           icon={Languages}
@@ -101,7 +102,7 @@ export default function SettingsScreen({ navigation }: Props) {
           accent={colors.neon.blue}
         />
 
-        <PromoAdCard style={{ marginTop: 8 }} />
+        <PromoAdCard at="afterRows" isDefault style={{ marginTop: 8 }} />
 
         <Text className="mt-6 text-center text-xs text-subtle">
           {APP_NAME} v{APP_VERSION}

@@ -49,11 +49,17 @@ export default function OutfitCategoriesScreen({ navigation }: Props) {
         data={groups}
         keyExtractor={(group) => group.id}
         ListHeaderComponent={
-          <ScreenHeader
-            title={t.outfitFlow.categoriesTitle}
-            subtitle={t.outfitFlow.categoriesSubtitle}
-            onBack={() => navigation.goBack()}
-          />
+          <View>
+            <ScreenHeader
+              title={t.outfitFlow.categoriesTitle}
+              subtitle={t.outfitFlow.categoriesSubtitle}
+              onBack={() => navigation.goBack()}
+            />
+            <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
+          </View>
+        }
+        ListFooterComponent={
+          <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 16 }} />
         }
         ItemSeparatorComponent={RowGap}
         contentContainerStyle={{ paddingBottom: 32 }}
@@ -62,7 +68,7 @@ export default function OutfitCategoriesScreen({ navigation }: Props) {
           const copy = t.outfitFlow.groups[group.id];
           const ad =
             index === AD_AFTER - 1 ? (
-              <PromoAdCard style={{ marginTop: 16 }} />
+              <PromoAdCard at="after3" isDefault style={{ marginTop: 16 }} />
             ) : null;
           return (
             <View className="px-5">

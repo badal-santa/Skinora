@@ -44,6 +44,7 @@ export default function AllEmotesScreen({ navigation }: Props) {
               subtitle={t.emotes.subtitle}
               onBack={() => navigation.goBack()}
             />
+            <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
             <View className="mb-4 flex-row items-end justify-between px-5">
               <Text className="text-lg font-extrabold text-foreground">
                 {t.emotes.all}
@@ -53,6 +54,9 @@ export default function AllEmotesScreen({ navigation }: Props) {
               </Text>
             </View>
           </View>
+        }
+        ListFooterComponent={
+          <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 12 }} />
         }
         ItemSeparatorComponent={RowGap}
         contentContainerStyle={{ paddingBottom: 32 }}
@@ -79,7 +83,11 @@ export default function AllEmotesScreen({ navigation }: Props) {
               ))}
             </View>
             {index === 1 && (
-              <PromoAdCard style={{ marginTop: 12, paddingHorizontal: 20 }} />
+              <PromoAdCard
+                at="afterRow2"
+                isDefault
+                style={{ marginTop: 12, paddingHorizontal: 20 }}
+              />
             )}
           </View>
         )}

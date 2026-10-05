@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { Megaphone } from "lucide-react-native";
 import { Text } from "./Text";
-import { usePromoAds, type PromoAd } from "../config/remoteConfig";
+import { useRoute } from "@react-navigation/native";
+import { usePlacementAds, usePlacementPositions, type PromoAd } from "../ads/ads";
 import { openInCustomTab } from "../customTab/customTab";
 import { useT } from "../i18n/language";
 import { colors, withAlpha } from "../theme/colors";
@@ -26,23 +27,52 @@ type Props = {
   compact?: boolean;
   /** Spacing around the card; dropped along with it when there's no ad. */
   style?: StyleProp<ViewStyle>;
+  /**
+   * The spot on the screen this instance stands for (e.g. "top"). A screen
+   * can render several; only the ones the dashboard chose for the placement
+   * show. Ids must match the placement's positions in the backend.
+   */
+  at?: string;
+  /** Shows when the dashboard hasn't chosen a spot (one per screen). */
+  isDefault?: boolean;
 };
 
 /**
  * House ad in a native-ad layout: logo, title, subtitle, "AD" badge,
- * banner creative and a full-width button. A random creative from Remote
- * Config (`promo_ads`) is picked each time the card mounts; tapping
- * anywhere opens its link in a Custom Tab. Renders nothing without ads.
+ * banner creative and a full-width button. Its placement is
+ * "<RouteName>.<card|banner|side>"; the admin dashboard decides whether it
+ * shows and which creatives it rotates (a random one per mount). Tapping
+ * opens the link in a Custom Tab. Renders nothing when there's no ad.
+ *
+ * When the dashboard puts one placement at several spots on a screen, each
+ * spot shows a different creative; spots beyond the number of creatives
+ * stay empty rather than repeat an ad.
  */
 export default function PromoAdCard({
   variant = "card",
   compact = false,
   style,
+  at,
+  isDefault = false,
 }: Props) {
-  const ads = usePromoAds();
+  const route = useRoute();
+  const slot = variant === "card" ? "card" : variant;
+  const placementId = `${route.name}.${slot}`;
+  const ads = usePlacementAds(placementId);
+  const positions = usePlacementPositions(placementId);
   // Remembered per mount so the creative doesn't change while scrolling.
   const [seed] = useState(Math.random);
-  const ad = ads.length ? ads[Math.floor(seed * ads.length)] : undefined;
+
+  let ad: PromoAd | undefined;
+  if (at === undefined) {
+    ad = ads.length ? ads[Math.floor(seed * ads.length)] : undefined;
+  } else {
+    // Index among the chosen spots (top to bottom); -1 = not chosen.
+    const spot = positions ? positions.indexOf(at) : isDefault ? 0 : -1;
+    if (spot >= 0 && spot < ads.length) {
+      ad = ads[(rotationStart(`${route.key}:${placementId}`) + spot) % ads.length];
+    }
+  }
 
   return ad ? (
     <View style={style}>
@@ -55,6 +85,21 @@ export default function PromoAdCard({
       )}
     </View>
   ) : null;
+}
+
+/**
+ * Random starting creative shared by every spot of one placement on one
+ * screen visit, so spots show consecutive (different) creatives. A new
+ * visit (new route key) starts somewhere new.
+ */
+const rotationStarts = new Map<string, number>();
+function rotationStart(key: string) {
+  let start = rotationStarts.get(key);
+  if (start === undefined) {
+    start = Math.floor(Math.random() * 1_000_000);
+    rotationStarts.set(key, start);
+  }
+  return start;
 }
 
 function AdLayout({ ad, compact }: { ad: PromoAd; compact: boolean }) {

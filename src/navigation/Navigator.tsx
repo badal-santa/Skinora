@@ -21,7 +21,7 @@ import CalculatorHubScreen from "../screens/CalculatorHubScreen";
 import TierCalculatorScreen from "../screens/TierCalculatorScreen";
 import GamesScreen from "../screens/GamesScreen";
 import SoundsScreen from "../screens/SoundsScreen";
-import { getCustomTabConfig } from "../config/remoteConfig";
+import { getCustomTabConfig } from "../ads/ads";
 import { withCustomTab } from "../customTab/customTab";
 import type { RootStackParamList } from "./types";
 
@@ -46,7 +46,9 @@ const backListeners = ({
   }) => {
     const { type } = e.data.action;
     if (allowBack || (type !== "GO_BACK" && type !== "POP")) return;
-    if (!getCustomTabConfig().onBack) return;
+    // Back press switched off: go back normally, untouched.
+    const tab = getCustomTabConfig();
+    if (!tab.enabled || !tab.onBack) return;
 
     e.preventDefault();
     withCustomTab(() => {
@@ -56,7 +58,7 @@ const backListeners = ({
       } finally {
         allowBack = false;
       }
-    });
+    }, "back");
   },
 });
 

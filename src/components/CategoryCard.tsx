@@ -285,7 +285,7 @@ export default function CategoryCard({
           )}
 
           {/* Top edge highlight — sells the bevel */}
-          <View className="absolute left-4 right-4 top-0 h-px bg-white/40" />
+          {/* <View className="absolute left-4 right-4 top-0 h-px bg-white/40" /> */}
         </Animated.View>
 
         {popOut && (

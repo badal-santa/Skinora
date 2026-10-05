@@ -59,6 +59,9 @@ export default function LanguageScreen({ navigation, route }: Props) {
       />
       <View className="mx-5 h-px bg-border" />
 
+      {/* Ad slot: above the list or pinned under it (dashboard picks). */}
+      <PromoAdCard at="top" style={{ paddingHorizontal: 20, paddingTop: 16 }} />
+
       <FlatList
         data={languages}
         keyExtractor={(item) => item.code}
@@ -75,8 +78,9 @@ export default function LanguageScreen({ navigation, route }: Props) {
         accessibilityRole="radiogroup"
       />
 
-      {/* Ad slot, pinned under the list */}
       <PromoAdCard
+        at="bottom"
+        isDefault
         style={{ paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 }}
       />
     </SafeAreaView>

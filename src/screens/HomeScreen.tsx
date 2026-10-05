@@ -47,11 +47,16 @@ export default function HomeScreen({ navigation }: Props) {
       >
         <HomeHeader onPressSettings={() => navigation.navigate("Settings")} />
 
+        {/* Ad card: the dashboard picks one of these spots (`at`). */}
+        <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
+
         {/* Featured carousel */}
         <FeaturedCarousel
           slides={slides}
           onPressSlide={(slide) => openSection(slide.route)}
         />
+
+        <PromoAdCard at="afterSlider" style={{ paddingHorizontal: 20, marginTop: 20 }} />
 
         {/* Categories */}
         <View className="mt-7 px-5">
@@ -76,7 +81,7 @@ export default function HomeScreen({ navigation }: Props) {
             ))}
           </View>
 
-          <PromoAdCard style={{ marginTop: 16 }} />
+          <PromoAdCard at="afterCategories" isDefault style={{ marginTop: 16 }} />
 
           {/* Tools */}
           <View className="mt-4 flex-row justify-between">
@@ -105,6 +110,8 @@ export default function HomeScreen({ navigation }: Props) {
               onPress={() => openSection("Sounds")}
             />
           </View>
+
+          <PromoAdCard at="bottom" style={{ marginTop: 16 }} />
         </View>
       </ScrollView>
     </SafeAreaView>
