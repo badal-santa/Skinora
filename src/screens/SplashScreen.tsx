@@ -20,6 +20,7 @@ import type { RootStackScreenProps } from "../navigation/types";
 import { colors, withAlpha } from "../theme/colors";
 import { loadLanguage, useT } from "../i18n/language";
 import { waitForAds } from "../ads/ads";
+import { waitForRemoteConfig } from "../config/remoteConfig";
 import { withLaunchCustomTab } from "../customTab/customTab";
 
 type Props = RootStackScreenProps<"Splash">;
@@ -105,8 +106,9 @@ export default function SplashScreen({ navigation }: Props) {
         navigation.replace("Language");
         return;
       }
-      // Give a slow first fetch a moment so the tab uses fresh settings.
-      await waitForAds(2000);
+      // Give slow first fetches a moment so the tab uses fresh settings
+      // (timing from the dashboard, links from Remote Config).
+      await Promise.all([waitForAds(2000), waitForRemoteConfig(2000)]);
       withLaunchCustomTab(() => navigation.replace("Home"));
     }, LOAD_DURATION + EXIT_DURATION);
 

@@ -195,6 +195,16 @@ export const zh: Strings = {
     ad: "广告",
     cta: "了解更多",
   },
+  update: {
+    title: "有可用更新",
+    message: "新版本已推出，包含问题修复和新功能。",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "需要更新",
+    forcedMessage: "此版本已不再支持。请更新后继续使用应用。",
+    newVersion: (v) => `版本 ${v}`,
+    update: "立即更新",
+    later: "稍后",
+  },
 
   characters: {
     title: "角色",

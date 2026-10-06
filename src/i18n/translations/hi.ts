@@ -195,6 +195,16 @@ export const hi: Strings = {
     ad: "विज्ञापन",
     cta: "और जानें",
   },
+  update: {
+    title: "अपडेट उपलब्ध है",
+    message: "ऐप का नया वर्ज़न सुधारों और नई सुविधाओं के साथ तैयार है।",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "अपडेट ज़रूरी है",
+    forcedMessage: "यह वर्ज़न अब समर्थित नहीं है। ऐप इस्तेमाल करते रहने के लिए कृपया अपडेट करें।",
+    newVersion: (v) => `वर्ज़न ${v}`,
+    update: "अभी अपडेट करें",
+    later: "बाद में",
+  },
 
   characters: {
     title: "कैरेक्टर",

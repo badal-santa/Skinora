@@ -205,6 +205,16 @@ export const en = {
     ad: "AD",
     cta: "Learn More",
   },
+  update: {
+    title: "Update available",
+    message: "A new version of the app is ready with fixes and new features.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Update required",
+    forcedMessage: "This version is no longer supported. Please update to keep using the app.",
+    newVersion: (v: string) => `Version ${v}`,
+    update: "Update now",
+    later: "Later",
+  },
 
   characters: {
     title: "Characters",

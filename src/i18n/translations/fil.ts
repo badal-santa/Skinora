@@ -195,6 +195,16 @@ export const fil: Strings = {
     ad: "AD",
     cta: "Alamin pa",
   },
+  update: {
+    title: "May bagong update",
+    message: "Handa na ang bagong bersyon ng app na may mga ayos at bagong feature.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Kailangang mag-update",
+    forcedMessage: "Hindi na suportado ang bersyong ito. Mag-update para patuloy na magamit ang app.",
+    newVersion: (v) => `Bersyon ${v}`,
+    update: "I-update ngayon",
+    later: "Mamaya",
+  },
 
   characters: {
     title: "Mga Character",

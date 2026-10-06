@@ -195,6 +195,16 @@ export const vi: Strings = {
     ad: "QUẢNG CÁO",
     cta: "Tìm hiểu thêm",
   },
+  update: {
+    title: "Có bản cập nhật",
+    message: "Phiên bản mới của ứng dụng đã sẵn sàng với các bản sửa lỗi và tính năng mới.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Cần cập nhật",
+    forcedMessage: "Phiên bản này không còn được hỗ trợ. Vui lòng cập nhật để tiếp tục sử dụng ứng dụng.",
+    newVersion: (v) => `Phiên bản ${v}`,
+    update: "Cập nhật ngay",
+    later: "Để sau",
+  },
 
   characters: {
     title: "Nhân vật",

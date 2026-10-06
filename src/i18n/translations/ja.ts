@@ -195,6 +195,16 @@ export const ja: Strings = {
     ad: "広告",
     cta: "詳細を見る",
   },
+  update: {
+    title: "アップデートがあります",
+    message: "不具合の修正と新機能を含む新しいバージョンが利用できます。",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "アップデートが必要です",
+    forcedMessage: "このバージョンはサポートが終了しました。引き続きご利用いただくにはアップデートしてください。",
+    newVersion: (v) => `バージョン ${v}`,
+    update: "今すぐアップデート",
+    later: "あとで",
+  },
 
   characters: {
     title: "キャラクター",

@@ -209,6 +209,16 @@ export const ru: Strings = {
     ad: "РЕКЛАМА",
     cta: "Подробнее",
   },
+  update: {
+    title: "Доступно обновление",
+    message: "Вышла новая версия приложения с исправлениями и новыми функциями.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Требуется обновление",
+    forcedMessage: "Эта версия больше не поддерживается. Обновите приложение, чтобы продолжить.",
+    newVersion: (v) => `Версия ${v}`,
+    update: "Обновить",
+    later: "Позже",
+  },
 
   characters: {
     title: "Персонажи",

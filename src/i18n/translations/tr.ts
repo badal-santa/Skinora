@@ -195,6 +195,16 @@ export const tr: Strings = {
     ad: "REKLAM",
     cta: "Daha fazla bilgi",
   },
+  update: {
+    title: "Güncelleme mevcut",
+    message: "Uygulamanın düzeltmeler ve yeni özellikler içeren yeni sürümü hazır.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Güncelleme gerekli",
+    forcedMessage: "Bu sürüm artık desteklenmiyor. Uygulamayı kullanmaya devam etmek için lütfen güncelleyin.",
+    newVersion: (v) => `Sürüm ${v}`,
+    update: "Şimdi güncelle",
+    later: "Sonra",
+  },
 
   characters: {
     title: "Karakterler",

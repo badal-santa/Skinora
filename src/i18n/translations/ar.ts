@@ -205,6 +205,16 @@ export const ar: Strings = {
     ad: "إعلان",
     cta: "اعرف المزيد",
   },
+  update: {
+    title: "تحديث متوفر",
+    message: "إصدار جديد من التطبيق جاهز مع إصلاحات وميزات جديدة.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "التحديث مطلوب",
+    forcedMessage: "لم يعد هذا الإصدار مدعومًا. يُرجى التحديث لمواصلة استخدام التطبيق.",
+    newVersion: (v) => `الإصدار ${v}`,
+    update: "حدّث الآن",
+    later: "لاحقًا",
+  },
 
   characters: {
     title: "الشخصيات",

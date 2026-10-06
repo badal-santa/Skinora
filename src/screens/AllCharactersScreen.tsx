@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CharacterCard from "../components/CharacterCard";
 import ScreenHeader from "../components/ScreenHeader";
 import PromoAdCard from "../components/PromoAdCard";
+import { LIST_AD_SPOT, listAdAfterRow } from "../ads/listAds";
 import { characters } from "../data/data";
 import { useT } from "../i18n/language";
 import { withCustomTab } from "../customTab/customTab";
@@ -43,20 +44,33 @@ export default function AllCharactersScreen({ navigation }: Props) {
                 );
               }}
             />,
-            // Full-width ad row after the second row of cards.
-            index === 3 ? (
-              <PromoAdCard
-                key="promo"
-                at="afterRow2"
-                isDefault
-                style={{ width: "100%" }}
-              />
-            ) : null,
+            // Repeating full-width ad between rows (2 cards per row).
+            <ListAd
+              key={`ad-${index}`}
+              afterIndex={index}
+              total={characters.length}
+            />,
           ])}
         </View>
 
         <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 16 }} />
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** The in-list ad after card `afterIndex` when it closes an ad row. */
+function ListAd({ afterIndex, total }: { afterIndex: number; total: number }) {
+  const endsRow = afterIndex % 2 === 1 || afterIndex === total - 1;
+  const occurrence = endsRow ? listAdAfterRow(Math.floor(afterIndex / 2)) : null;
+  if (occurrence === null) return null;
+  return (
+    <PromoAdCard
+      at={LIST_AD_SPOT}
+      isDefault
+      occurrence={occurrence}
+      layout="side"
+      style={{ width: "100%" }}
+    />
   );
 }

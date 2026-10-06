@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import EmoteCard, { type Emote } from "../components/EmoteCard";
 import ScreenHeader from "../components/ScreenHeader";
 import PromoAdCard from "../components/PromoAdCard";
+import { LIST_AD_SPOT, listAdAfterRow } from "../ads/listAds";
 import { Text } from "../components/Text";
 import { emotes } from "../data/data";
 import { useT } from "../i18n/language";
@@ -82,10 +83,12 @@ export default function AllEmotesScreen({ navigation }: Props) {
                 <View key={`spacer-${i}`} className="w-[31.5%]" />
               ))}
             </View>
-            {index === 1 && (
+            {listAdAfterRow(index) !== null && (
               <PromoAdCard
-                at="afterRow2"
+                at={LIST_AD_SPOT}
                 isDefault
+                occurrence={listAdAfterRow(index)!}
+                layout="side"
                 style={{ marginTop: 12, paddingHorizontal: 20 }}
               />
             )}

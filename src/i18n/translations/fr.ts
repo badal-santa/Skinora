@@ -195,6 +195,16 @@ export const fr: Strings = {
     ad: "PUB",
     cta: "En savoir plus",
   },
+  update: {
+    title: "Mise à jour disponible",
+    message: "Une nouvelle version de l'app est prête, avec des corrections et des nouveautés.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Mise à jour requise",
+    forcedMessage: "Cette version n'est plus prise en charge. Mettez à jour pour continuer à utiliser l'app.",
+    newVersion: (v) => `Version ${v}`,
+    update: "Mettre à jour",
+    later: "Plus tard",
+  },
 
   characters: {
     title: "Personnages",

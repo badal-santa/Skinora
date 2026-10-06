@@ -195,6 +195,16 @@ export const id: Strings = {
     ad: "IKLAN",
     cta: "Pelajari selengkapnya",
   },
+  update: {
+    title: "Pembaruan tersedia",
+    message: "Versi baru aplikasi sudah siap dengan perbaikan dan fitur baru.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Pembaruan diperlukan",
+    forcedMessage: "Versi ini sudah tidak didukung. Perbarui untuk terus menggunakan aplikasi.",
+    newVersion: (v) => `Versi ${v}`,
+    update: "Perbarui sekarang",
+    later: "Nanti",
+  },
 
   characters: {
     title: "Karakter",

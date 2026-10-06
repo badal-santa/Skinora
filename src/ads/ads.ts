@@ -1,6 +1,11 @@
 import { useSyncExternalStore } from "react";
 import { AppState } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  getCustomTabUrls,
+  onRemoteConfigChange,
+  useRemoteAdsEnabled,
+} from "../config/remoteConfig";
 
 /**
  * Ads and the Custom Tab settings come from skinora-backend (Cloudflare
@@ -43,7 +48,7 @@ export type PromoAd = {
 /** The site opened in a Chrome Custom Tab between screens. */
 export type CustomTabConfig = {
   enabled: boolean;
-  /** Sites to rotate through (https). */
+  /** Sites to rotate through (https), from Remote Config `web_url`. */
   urls: string[];
   onTap: boolean;
   everyClicks: number;
@@ -142,7 +147,9 @@ function parseCustomTab(raw: unknown): CustomTabConfig {
     typeof v === "number" && Number.isFinite(v) ? v : fallback;
   const urls = Array.isArray(t.urls) ? [...new Set(t.urls.filter(isHttps))] : [];
   return {
-    enabled: t.enabled === true && urls.length > 0,
+    // Links come from Remote Config now (getCustomTabConfig); the
+    // dashboard's own list is only for older app versions.
+    enabled: t.enabled === true,
     urls,
     // Older configs had no switch: taps always counted.
     onTap: t.onTap !== false,
@@ -302,7 +309,9 @@ const subscribe = (listener: () => void) => {
 
 /** Creatives to rotate in one slot; empty when the slot is off. */
 function creativesFor(c: AdsConfig | null, placementId: string): PromoAd[] {
-  if (!c || !c.adsEnabled) return [];
+  // The master on/off switch is Firebase `ads_enabled` (usePlacementAds);
+  // the backend's adsEnabled is only for older app versions.
+  if (!c) return [];
   // Slots the backend doesn't know yet default to on with all creatives.
   const placement = c.placements[placementId];
   if (placement && !placement.enabled) return [];
@@ -316,8 +325,11 @@ function creativesFor(c: AdsConfig | null, placementId: string): PromoAd[] {
  */
 export function usePlacementAds(placementId: string) {
   const current = useSyncExternalStore(subscribe, () => config);
-  return creativesFor(current, placementId);
+  const enabled = useRemoteAdsEnabled();
+  return enabled ? creativesFor(current, placementId) : NO_ADS;
 }
+
+const NO_ADS: PromoAd[] = [];
 
 /** Spots on the screen the dashboard chose for a slot; undefined = app default. */
 export function usePlacementPositions(placementId: string) {
@@ -325,9 +337,24 @@ export function usePlacementPositions(placementId: string) {
 }
 
 /** Current Custom Tab settings (off until the dashboard's arrive). */
-export const getCustomTabConfig = () => config?.customTab ?? CUSTOM_TAB_OFF;
+/**
+ * Current Custom Tab settings: on/off and timing from the dashboard, links
+ * from Firebase Remote Config (`web_url`). No links = off, so an empty
+ * `web_url` (for a country or app version) turns the Custom Tab off.
+ */
+export function getCustomTabConfig(): CustomTabConfig {
+  const settings = config?.customTab ?? CUSTOM_TAB_OFF;
+  const urls = getCustomTabUrls();
+  return { ...settings, urls, enabled: settings.enabled && urls.length > 0 };
+}
 
-/** Called with the new settings whenever a fresh config arrives. */
+/** Called with the new settings whenever the dashboard or Remote Config changes. */
 export function onCustomTabConfig(listener: (config: CustomTabConfig) => void) {
-  return subscribe(() => listener(getCustomTabConfig()));
+  const notify = () => listener(getCustomTabConfig());
+  const offAds = subscribe(notify);
+  const offRemote = onRemoteConfigChange(notify);
+  return () => {
+    offAds();
+    offRemote();
+  };
 }

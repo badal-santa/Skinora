@@ -195,6 +195,16 @@ export const de: Strings = {
     ad: "ANZEIGE",
     cta: "Mehr erfahren",
   },
+  update: {
+    title: "Update verfügbar",
+    message: "Eine neue Version der App mit Verbesserungen und neuen Funktionen ist da.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Update erforderlich",
+    forcedMessage: "Diese Version wird nicht mehr unterstützt. Bitte aktualisiere, um die App weiter zu nutzen.",
+    newVersion: (v) => `Version ${v}`,
+    update: "Jetzt aktualisieren",
+    later: "Später",
+  },
 
   characters: {
     title: "Charaktere",

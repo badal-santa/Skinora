@@ -35,6 +35,17 @@ type Props = {
   at?: string;
   /** Shows when the dashboard hasn't chosen a spot (one per screen). */
   isDefault?: boolean;
+  /**
+   * For a spot that repeats down a list: which repeat this is (0 = first).
+   * Repeats show the next creatives in the rotation.
+   */
+  occurrence?: number;
+  /**
+   * Draw with another layout than `variant` while keeping `variant`'s
+   * placement, e.g. side-style ads inside a grid, controlled by the
+   * screen's card slot.
+   */
+  layout?: Variant;
 };
 
 /**
@@ -46,7 +57,9 @@ type Props = {
  *
  * When the dashboard puts one placement at several spots on a screen, each
  * spot shows a different creative; spots beyond the number of creatives
- * stay empty rather than repeat an ad.
+ * stay empty rather than repeat an ad. A spot that repeats down a list
+ * (`occurrence`) keeps rotating; neighbouring repeats always differ, and
+ * with a single creative only the first one shows.
  */
 export default function PromoAdCard({
   variant = "card",
@@ -54,6 +67,8 @@ export default function PromoAdCard({
   style,
   at,
   isDefault = false,
+  occurrence = 0,
+  layout = variant,
 }: Props) {
   const route = useRoute();
   const slot = variant === "card" ? "card" : variant;
@@ -69,16 +84,19 @@ export default function PromoAdCard({
   } else {
     // Index among the chosen spots (top to bottom); -1 = not chosen.
     const spot = positions ? positions.indexOf(at) : isDefault ? 0 : -1;
-    if (spot >= 0 && spot < ads.length) {
-      ad = ads[(rotationStart(`${route.key}:${placementId}`) + spot) % ads.length];
+    const spots = positions?.length ?? 1;
+    const shown = occurrence === 0 ? spot < ads.length : ads.length > 1;
+    if (spot >= 0 && shown) {
+      const index = spot + occurrence * spots;
+      ad = ads[(rotationStart(`${route.key}:${placementId}`) + index) % ads.length];
     }
   }
 
   return ad ? (
     <View style={style}>
-      {variant === "banner" ? (
+      {layout === "banner" ? (
         <BannerLayout key={ad.id} ad={ad} />
-      ) : variant === "side" ? (
+      ) : layout === "side" ? (
         <SideLayout key={ad.id} ad={ad} />
       ) : (
         <AdLayout key={ad.id} ad={ad} compact={compact} />

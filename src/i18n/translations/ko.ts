@@ -195,6 +195,16 @@ export const ko: Strings = {
     ad: "광고",
     cta: "자세히 보기",
   },
+  update: {
+    title: "업데이트 가능",
+    message: "버그 수정과 새로운 기능이 포함된 새 버전이 준비되었습니다.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "업데이트 필요",
+    forcedMessage: "이 버전은 더 이상 지원되지 않습니다. 앱을 계속 사용하려면 업데이트해 주세요.",
+    newVersion: (v) => `버전 ${v}`,
+    update: "지금 업데이트",
+    later: "나중에",
+  },
 
   characters: {
     title: "캐릭터",

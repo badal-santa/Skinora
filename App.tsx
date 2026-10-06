@@ -1,8 +1,14 @@
 import "./global.css";
 import * as NativeSplash from "expo-splash-screen";
-import { useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from "@react-navigation/native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import Navigator from "./src/navigation/Navigator";
+import UpdateSheet from "./src/components/UpdateSheet";
+import type { RootStackParamList } from "./src/navigation/types";
 import { initRemoteConfig } from "./src/config/remoteConfig";
 import { initAds } from "./src/ads/ads";
 
@@ -11,19 +17,35 @@ import { initAds } from "./src/ads/ads";
 NativeSplash.preventAutoHideAsync().catch(() => {});
 NativeSplash.setOptions({ duration: 200, fade: true });
 
+const navigation = createNavigationContainerRef<RootStackParamList>();
+
+/** Screens where the update sheet waits (splash and first-run language). */
+const NO_UPDATE_SHEET = new Set(["Splash", "Language"]);
+
 export default function App() {
+  const [routeName, setRouteName] = useState<string>();
+  const trackRoute = () => setRouteName(navigation.getCurrentRoute()?.name);
+
   useEffect(() => {
     initRemoteConfig();
     initAds();
   }, []);
 
   return (
-    <NavigationContainer
-      onReady={() => {
-        NativeSplash.hideAsync().catch(() => {});
-      }}
-    >
-      <Navigator />
-    </NavigationContainer>
+    // Provides safe-area insets to everything, including the update sheet
+    // that sits outside the navigator.
+    <SafeAreaProvider>
+      <NavigationContainer
+        ref={navigation}
+        onReady={() => {
+          NativeSplash.hideAsync().catch(() => {});
+          trackRoute();
+        }}
+        onStateChange={trackRoute}
+      >
+        <Navigator />
+        <UpdateSheet allowed={!!routeName && !NO_UPDATE_SHEET.has(routeName)} />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }

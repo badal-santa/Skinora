@@ -34,6 +34,20 @@
       },
       "valueType": "JSON",
       "description": "Games screen. JSON array of { id, title, url, image?, category?, featured? }. url/image must be https. Replace the examples with real game links."
+    },
+    "web_url": {
+      "defaultValue": {
+        "value": ""
+      },
+      "description": "Custom Tab link(s), https. Several: separate with commas. Empty = Custom Tab off. Target by app version / country with conditions.",
+      "valueType": "STRING"
+    },
+    "ads_enabled": {
+      "defaultValue": {
+        "value": "true"
+      },
+      "description": "Master ads switch. false = no ad cards or header ad icons anywhere (e.g. during Play Store review). Use conditions for country / app version.",
+      "valueType": "BOOLEAN"
     }
   }
 }

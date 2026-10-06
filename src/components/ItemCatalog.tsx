@@ -5,6 +5,7 @@ import { Text } from "./Text";
 import OutfitCard, { type Outfit, type OutfitPiece } from "./OutfitCard";
 import ScreenHeader from "./ScreenHeader";
 import PromoAdCard from "./PromoAdCard";
+import { LIST_AD_SPOT, listAdAfterRow } from "../ads/listAds";
 import { label, useT } from "../i18n/language";
 import type { Strings } from "../i18n/translations";
 import { colors } from "../theme/colors";
@@ -26,7 +27,24 @@ type Props = {
   onOpenItem: (item: Outfit) => void;
 };
 
-const RowGap = () => <View className="h-4" />;
+const COLUMNS = 2;
+
+/** A row of up to 2 cards, or the repeating ad between rows. */
+type Row =
+  | { kind: "items"; key: string; items: Outfit[] }
+  | { kind: "ad"; key: string; occurrence: number };
+
+/** Splits items into rows and puts the in-list ad after the right rows. */
+function toRows(items: Outfit[]): Row[] {
+  const rows: Row[] = [];
+  for (let i = 0, row = 0; i < items.length; i += COLUMNS, row++) {
+    const chunk = items.slice(i, i + COLUMNS);
+    rows.push({ kind: "items", key: chunk.map((o) => o.id).join("|"), items: chunk });
+    const occurrence = listAdAfterRow(row);
+    if (occurrence !== null) rows.push({ kind: "ad", key: `ad-${occurrence}`, occurrence });
+  }
+  return rows;
+}
 
 /**
  * Filterable 2-column grid of items with favourites.
@@ -64,6 +82,8 @@ export default function ItemCatalog({
         matchesFilter(item) && (!favoritesOnly || favorites.includes(item.id)),
     );
   }, [items, pieceFilters, activeFilter, favoritesOnly, favorites]);
+
+  const rows = useMemo(() => toRows(filteredItems), [filteredItems]);
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) =>
@@ -153,29 +173,41 @@ export default function ItemCatalog({
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
 
       <FlatList
-        data={filteredItems}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
+        data={rows}
+        keyExtractor={(row) => row.key}
         ListHeaderComponent={header}
         ListEmptyComponent={emptyState}
         ListFooterComponent={
           <PromoAdCard at="bottom" style={{ paddingHorizontal: 20, marginTop: 20 }} />
         }
-        columnWrapperStyle={{
-          justifyContent: "space-between",
-          paddingHorizontal: 20,
-        }}
-        ItemSeparatorComponent={RowGap}
+        // Gaps live on the rows, so an ad with nothing to show takes no space.
         contentContainerStyle={{ paddingBottom: 32 }}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <OutfitCard
-            outfit={item}
-            isFavorite={favorites.includes(item.id)}
-            onToggleFavorite={toggleFavorite}
-            onPress={() => onOpenItem(item)}
-          />
-        )}
+        renderItem={({ item: row, index }) =>
+          row.kind === "ad" ? (
+            // Side-style ad between rows, as in the reference app.
+            <PromoAdCard
+              at={LIST_AD_SPOT}
+              occurrence={row.occurrence}
+              layout="side"
+              style={{ paddingHorizontal: 20, marginTop: 16 }}
+            />
+          ) : (
+            <View className={`flex-row justify-between px-5 ${index > 0 ? "mt-4" : ""}`}>
+              {row.items.map((item) => (
+                <OutfitCard
+                  key={item.id}
+                  outfit={item}
+                  isFavorite={favorites.includes(item.id)}
+                  onToggleFavorite={toggleFavorite}
+                  onPress={() => onOpenItem(item)}
+                />
+              ))}
+              {/* Keep a lone last card at column width. */}
+              {row.items.length < COLUMNS && <View className="w-[49.2%]" />}
+            </View>
+          )
+        }
       />
     </SafeAreaView>
   );

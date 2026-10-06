@@ -195,6 +195,16 @@ export const es: Strings = {
     ad: "ANUNCIO",
     cta: "Más información",
   },
+  update: {
+    title: "Actualización disponible",
+    message: "Hay una nueva versión de la app con correcciones y novedades.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Actualización necesaria",
+    forcedMessage: "Esta versión ya no es compatible. Actualiza para seguir usando la app.",
+    newVersion: (v) => `Versión ${v}`,
+    update: "Actualizar ahora",
+    later: "Más tarde",
+  },
 
   characters: {
     title: "Personajes",

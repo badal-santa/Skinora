@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { AppState } from "react-native";
 import {
   activate,
   fetchAndActivate,
@@ -12,8 +13,8 @@ import {
  * Remote Config). The defaults below apply until the first fetch succeeds,
  * or when Firebase isn't available (e.g. Expo Go).
  *
- * Ads and the Custom Tab are managed in the admin dashboard instead
- * (see src/ads/ads.ts).
+ * Ads and the Custom Tab's timing are managed in the admin dashboard
+ * (see src/ads/ads.ts); the Custom Tab's links come from `web_url` here.
  */
 const DEFAULTS = {
   /** Calculator: Robux bought per 1 USD (standard packs ≈ 80). */
@@ -35,6 +36,32 @@ const DEFAULTS = {
    */
   games_list: "[]",
 
+  /**
+   * Custom Tab: the https site(s) it opens; set in the Firebase console.
+   * Several links may be separated by commas, spaces or new lines; the tab
+   * rotates through them. Empty = the Custom Tab never opens. Same key as
+   * the team's other apps, so it can be targeted by app version / country.
+   */
+  web_url: "",
+
+  /**
+   * Master switch for all ad cards and header ad icons. false = no ads
+   * anywhere (e.g. during Play Store review); can also be set per country
+   * or app version with conditions. The ads themselves (creatives,
+   * screens, positions) come from the admin dashboard.
+   */
+  ads_enabled: true,
+
+  /**
+   * Update sheet: the newest released version, e.g. "1.2.0". Users on an
+   * older version see "Update available" (they can tap Later). Empty = off.
+   */
+  latest_version: "",
+  /**
+   * Oldest version still allowed, e.g. "1.1.0". Users below it get an
+   * update sheet they can't close. Empty = no forced update.
+   */
+  min_version: "",
 };
 
 export type TierId = "basic" | "pro" | "elite";
@@ -62,6 +89,12 @@ export type Game = {
 type Config = {
   calculator: CalculatorRates;
   games: Game[];
+  /** From `web_url`; empty = Custom Tab off. */
+  customTabUrls: string[];
+  /** From `latest_version` / `min_version` ("" = not set). */
+  update: { latest: string; min: string };
+  /** From `ads_enabled`; false hides every ad. */
+  adsEnabled: boolean;
 };
 type Key = keyof typeof DEFAULTS;
 type Getter = (key: Key) => ReturnType<typeof getValue> | undefined;
@@ -74,6 +107,15 @@ function positive(get: Getter, key: Key, max = Infinity) {
 
 const isHttpUrl = (value: unknown): value is string =>
   typeof value === "string" && /^https?:\/\//i.test(value.trim());
+
+/** Parses `web_url`: one or more https links (separated by commas/spaces). */
+function parseUrls(value: string): string[] {
+  const links = value
+    .split(/[\s,]+/)
+    .map((link) => link.trim())
+    .filter((link) => /^https:\/\/\S+\.\S+/i.test(link));
+  return [...new Set(links)];
+}
 
 /** Parses `games_list`, dropping entries without a title or valid link. */
 function parseGames(json: string): Game[] {
@@ -143,6 +185,12 @@ function read(get: Getter): Config {
       ),
     },
     games: parseGames(get("games_list")?.asString() ?? DEFAULTS.games_list),
+    customTabUrls: parseUrls(get("web_url")?.asString() ?? DEFAULTS.web_url),
+    adsEnabled: get("ads_enabled")?.asBoolean() ?? DEFAULTS.ads_enabled,
+    update: {
+      latest: (get("latest_version")?.asString() ?? "").trim(),
+      min: (get("min_version")?.asString() ?? "").trim(),
+    },
   };
 }
 
@@ -152,6 +200,7 @@ const listeners = new Set<() => void>();
 function refresh() {
   const remoteConfig = getRemoteConfig();
   config = read((key) => getValue(remoteConfig, key));
+  if (__DEV__) console.log("[remote-config] web_url links:", config.customTabUrls);
   listeners.forEach((listener) => listener());
 }
 
@@ -167,31 +216,65 @@ export function useCalculatorRates() {
   return useSyncExternalStore(subscribe, () => config.calculator);
 }
 
+/** Custom Tab links from `web_url` (empty = Custom Tab off). */
+export const getCustomTabUrls = () => config.customTabUrls;
+
+/** Calls `listener` whenever new Remote Config values are active. */
+export const onRemoteConfigChange = subscribe;
+
+/** Master ads switch from Firebase (`ads_enabled`). */
+export function useRemoteAdsEnabled() {
+  return useSyncExternalStore(subscribe, () => config.adsEnabled);
+}
+
+/** Latest / minimum app versions for the update sheet. */
+export function useUpdateVersions() {
+  return useSyncExternalStore(subscribe, () => config.update);
+}
+
 /** Games list; re-renders when it changes in Remote Config. */
 export function useGames() {
   return useSyncExternalStore(subscribe, () => config.games);
 }
 
 let started = false;
+let markReady: () => void = () => {};
+const ready = new Promise<void>((resolve) => {
+  markReady = resolve;
+});
+
 /**
- * Fetches Remote Config once at launch and keeps it in sync with
- * real-time updates, so changes in the console apply without waiting for
- * the next app start.
+ * Resolves once the launch fetch has finished (or failed), or after
+ * `timeoutMs`, whichever is first. Lets the splash use fresh values.
+ */
+export function waitForRemoteConfig(timeoutMs: number) {
+  return Promise.race([
+    ready,
+    new Promise<void>((resolve) => setTimeout(resolve, timeoutMs)),
+  ]);
+}
+
+/**
+ * Fetches Remote Config at launch (and again whenever the app returns to
+ * the foreground) and keeps it in sync with real-time updates, so changes
+ * in the console apply without waiting for the next app start. A failed
+ * fetch (e.g. no network at launch) doesn't stop the later ones.
  */
 export async function initRemoteConfig() {
   if (started) return;
   started = true;
+  let remoteConfig: ReturnType<typeof getRemoteConfig>;
   try {
-    const remoteConfig = getRemoteConfig();
+    remoteConfig = getRemoteConfig();
     remoteConfig.defaultConfig = DEFAULTS;
     remoteConfig.settings = {
-      // Refetch at most hourly in release; always in development.
-      minimumFetchIntervalMillis: __DEV__ ? 0 : 60 * 60 * 1000,
+      // Refetch at launch / return to the app at most once a minute in
+      // release, so switches like ads_enabled apply on the next open even
+      // if a real-time update is missed; always in development.
+      minimumFetchIntervalMillis: __DEV__ ? 0 : 60 * 1000,
       fetchTimeoutMillis: 10_000,
     };
     refresh(); // cached values from the last session
-    await fetchAndActivate(remoteConfig);
-    refresh();
 
     onConfigUpdate(remoteConfig, {
       next: () => {
@@ -201,7 +284,18 @@ export async function initRemoteConfig() {
       complete: () => {},
     });
   } catch (error) {
-    // No native Firebase (Expo Go) or no network — keep the defaults.
+    // No native Firebase (Expo Go) — keep the defaults.
     console.warn("[remote-config] unavailable:", error);
+    markReady();
+    return;
   }
+
+  const fetchLatest = () =>
+    fetchAndActivate(remoteConfig).then(refresh, (error) =>
+      console.warn("[remote-config] fetch failed:", error),
+    );
+  await fetchLatest().finally(markReady);
+  AppState.addEventListener("change", (state) => {
+    if (state === "active") fetchLatest();
+  });
 }

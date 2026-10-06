@@ -195,6 +195,16 @@ export const pt: Strings = {
     ad: "ANÚNCIO",
     cta: "Saiba mais",
   },
+  update: {
+    title: "Atualização disponível",
+    message: "Uma nova versão do app está pronta, com correções e novidades.",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "Atualização obrigatória",
+    forcedMessage: "Esta versão não é mais compatível. Atualize para continuar usando o app.",
+    newVersion: (v) => `Versão ${v}`,
+    update: "Atualizar agora",
+    later: "Depois",
+  },
 
   characters: {
     title: "Personagens",

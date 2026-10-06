@@ -195,6 +195,16 @@ export const th: Strings = {
     ad: "โฆษณา",
     cta: "ดูเพิ่มเติม",
   },
+  update: {
+    title: "มีอัปเดตใหม่",
+    message: "แอปเวอร์ชันใหม่พร้อมแล้ว พร้อมการแก้ไขและฟีเจอร์ใหม่",
+    /** Shown when this version is below `min_version` (no "Later"). */
+    forcedTitle: "ต้องอัปเดต",
+    forcedMessage: "เวอร์ชันนี้ไม่รองรับแล้ว โปรดอัปเดตเพื่อใช้งานแอปต่อ",
+    newVersion: (v) => `เวอร์ชัน ${v}`,
+    update: "อัปเดตเลย",
+    later: "ภายหลัง",
+  },
 
   characters: {
     title: "ตัวละคร",

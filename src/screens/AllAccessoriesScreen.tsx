@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import AccessoryCard from "../components/AccessoryCard";
 import ScreenHeader from "../components/ScreenHeader";
 import PromoAdCard from "../components/PromoAdCard";
+import { LIST_AD_SPOT, listAdAfterRow } from "../ads/listAds";
 import { accessories } from "../data/data";
 import { useT } from "../i18n/language";
 import { withCustomTab } from "../customTab/customTab";
@@ -51,8 +52,14 @@ export default function AllAccessoriesScreen({ navigation }: Props) {
                 );
               }}
             />
-            {index === 2 && (
-              <PromoAdCard at="after3" isDefault style={{ marginTop: 12 }} />
+            {listAdAfterRow(index) !== null && (
+              <PromoAdCard
+                at={LIST_AD_SPOT}
+                isDefault
+                occurrence={listAdAfterRow(index)!}
+                layout="side"
+                style={{ marginTop: 12 }}
+              />
             )}
           </View>
         )}
