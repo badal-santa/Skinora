@@ -266,6 +266,8 @@ export const th: Strings = {
     title: "ภาษา",
     subtitle: "เลือกภาษาที่คุณต้องการ",
     confirm: "ยืนยันภาษา",
+    next: "ถัดไป",
+    save: "บันทึก",
   },
 
   labels: {

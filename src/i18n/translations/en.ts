@@ -276,6 +276,10 @@ export const en = {
     title: "Language",
     subtitle: "Choose your preferred language",
     confirm: "Confirm language",
+    /** Header button on first launch (continues to Home). */
+    next: "Next",
+    /** Header button when opened from Settings. */
+    save: "Save",
   },
 
   /**

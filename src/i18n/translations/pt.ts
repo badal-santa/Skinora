@@ -266,6 +266,8 @@ export const pt: Strings = {
     title: "Idioma",
     subtitle: "Escolha seu idioma preferido",
     confirm: "Confirmar idioma",
+    next: "Próximo",
+    save: "Salvar",
   },
 
   labels: {

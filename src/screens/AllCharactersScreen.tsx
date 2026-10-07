@@ -17,17 +17,18 @@ export default function AllCharactersScreen({ navigation }: Props) {
   return (
     <SafeAreaView className="flex-1 bg-[#080B18]">
       <StatusBar barStyle="light-content" backgroundColor="#080B18" />
+      <ScreenHeader
+        title={t.characters.title}
+        subtitle={t.characters.subtitle}
+        onBack={() => navigation.goBack()}
+      />
+      {/* Sticky ad strip: stays under the header while the list scrolls */}
+      <PromoAdCard variant="banner" style={{ marginBottom: 12 }} />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 32 }}
       >
-        <ScreenHeader
-          title={t.characters.title}
-          subtitle={t.characters.subtitle}
-          onBack={() => navigation.goBack()}
-        />
-
         <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
 
         {/* Character grid */}

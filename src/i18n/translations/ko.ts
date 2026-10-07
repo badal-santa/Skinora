@@ -266,6 +266,8 @@ export const ko: Strings = {
     title: "언어",
     subtitle: "원하는 언어를 선택하세요",
     confirm: "언어 확인",
+    next: "다음",
+    save: "저장",
   },
 
   labels: {

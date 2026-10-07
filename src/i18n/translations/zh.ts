@@ -266,6 +266,8 @@ export const zh: Strings = {
     title: "语言",
     subtitle: "选择你的首选语言",
     confirm: "确认语言",
+    next: "下一步",
+    save: "保存",
   },
 
   labels: {

@@ -266,6 +266,8 @@ export const vi: Strings = {
     title: "Ngôn ngữ",
     subtitle: "Chọn ngôn ngữ bạn muốn",
     confirm: "Xác nhận ngôn ngữ",
+    next: "Tiếp",
+    save: "Lưu",
   },
 
   labels: {

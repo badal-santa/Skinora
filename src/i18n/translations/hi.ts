@@ -266,6 +266,8 @@ export const hi: Strings = {
     title: "भाषा",
     subtitle: "अपनी पसंदीदा भाषा चुनें",
     confirm: "भाषा की पुष्टि करें",
+    next: "आगे",
+    save: "सेव करें",
   },
 
   labels: {

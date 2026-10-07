@@ -93,7 +93,6 @@ export default function ItemCatalog({
 
   const header = (
     <View>
-      <ScreenHeader title={title} subtitle={subtitle} onBack={onBack} />
       <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 20 }} />
 
       {/* Filters */}
@@ -171,6 +170,9 @@ export default function ItemCatalog({
   return (
     <SafeAreaView className="flex-1 bg-background">
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+      <ScreenHeader title={title} subtitle={subtitle} onBack={onBack} />
+      {/* Sticky ad strip: stays under the header while the list scrolls */}
+      <PromoAdCard variant="banner" style={{ marginBottom: 12 }} />
 
       <FlatList
         data={rows}

@@ -266,6 +266,8 @@ export const id: Strings = {
     title: "Bahasa",
     subtitle: "Pilih bahasa yang kamu inginkan",
     confirm: "Konfirmasi bahasa",
+    next: "Lanjut",
+    save: "Simpan",
   },
 
   labels: {

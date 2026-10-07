@@ -266,6 +266,8 @@ export const ja: Strings = {
     title: "言語",
     subtitle: "使用する言語を選択",
     confirm: "言語を確定",
+    next: "次へ",
+    save: "保存",
   },
 
   labels: {

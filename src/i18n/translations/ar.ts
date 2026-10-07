@@ -282,6 +282,8 @@ export const ar: Strings = {
     title: "اللغة",
     subtitle: "اختر لغتك المفضلة",
     confirm: "تأكيد اللغة",
+    next: "التالي",
+    save: "حفظ",
   },
 
   labels: {

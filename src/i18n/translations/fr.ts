@@ -267,6 +267,8 @@ export const fr: Strings = {
     title: "Langue",
     subtitle: "Choisis ta langue préférée",
     confirm: "Confirmer la langue",
+    next: "Suivant",
+    save: "Enregistrer",
   },
 
   labels: {

@@ -268,6 +268,8 @@ export const de: Strings = {
     title: "Sprache",
     subtitle: "Wähle deine bevorzugte Sprache",
     confirm: "Sprache bestätigen",
+    next: "Weiter",
+    save: "Speichern",
   },
 
   labels: {

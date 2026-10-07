@@ -267,6 +267,8 @@ export const fil: Strings = {
     title: "Wika",
     subtitle: "Piliin ang gusto mong wika",
     confirm: "Kumpirmahin ang wika",
+    next: "Susunod",
+    save: "I-save",
   },
 
   labels: {

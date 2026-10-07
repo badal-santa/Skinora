@@ -266,6 +266,8 @@ export const tr: Strings = {
     title: "Dil",
     subtitle: "Tercih ettiğin dili seç",
     confirm: "Dili onayla",
+    next: "İleri",
+    save: "Kaydet",
   },
 
   labels: {

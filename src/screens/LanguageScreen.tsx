@@ -44,7 +44,7 @@ export default function LanguageScreen({ navigation, route }: Props) {
             hitSlop={8}
             accessibilityRole="button"
             accessibilityLabel={t.language.confirm}
-            className="h-11 w-11 items-center justify-center rounded-2xl bg-primary active:opacity-70"
+            className="h-11 items-center justify-center rounded-2xl bg-primary px-5 active:opacity-70"
             style={{
               shadowColor: colors.primary,
               shadowOpacity: 0.6,
@@ -53,7 +53,10 @@ export default function LanguageScreen({ navigation, route }: Props) {
               elevation: 8,
             }}
           >
-            <Check size={22} color={colors.background} strokeWidth={3} />
+            {/* "Next" on first launch (goes on to Home), "Save" from Settings. */}
+            <Text className="text-[15px] font-extrabold text-background">
+              {fromSettings ? t.language.save : t.language.next}
+            </Text>
           </Pressable>
         }
       />

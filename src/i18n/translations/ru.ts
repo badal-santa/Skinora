@@ -288,6 +288,8 @@ export const ru: Strings = {
     title: "Язык",
     subtitle: "Выберите предпочитаемый язык",
     confirm: "Подтвердить язык",
+    next: "Далее",
+    save: "Сохранить",
   },
 
   labels: {

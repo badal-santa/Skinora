@@ -20,17 +20,19 @@ export default function AllAccessoriesScreen({ navigation }: Props) {
   return (
     <SafeAreaView className="flex-1 bg-background">
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+      <ScreenHeader
+        title={t.accessories.title}
+        subtitle={t.accessories.subtitle}
+        onBack={() => navigation.goBack()}
+      />
+      {/* Sticky ad strip: stays under the header while the list scrolls */}
+      <PromoAdCard variant="banner" style={{ marginBottom: 12 }} />
 
       <FlatList
         data={accessories}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={
           <View>
-            <ScreenHeader
-              title={t.accessories.title}
-              subtitle={t.accessories.subtitle}
-              onBack={() => navigation.goBack()}
-            />
             <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
           </View>
         }

@@ -34,17 +34,19 @@ export default function AllEmotesScreen({ navigation }: Props) {
   return (
     <SafeAreaView className="flex-1 bg-background">
       <StatusBar barStyle="light-content" backgroundColor={colors.background} />
+      <ScreenHeader
+        title={t.emotes.title}
+        subtitle={t.emotes.subtitle}
+        onBack={() => navigation.goBack()}
+      />
+      {/* Sticky ad strip: stays under the header while the list scrolls */}
+      <PromoAdCard variant="banner" style={{ marginBottom: 12 }} />
 
       <FlatList
         data={rows}
         keyExtractor={(row) => row.map((emote) => emote.id).join("|")}
         ListHeaderComponent={
           <View>
-            <ScreenHeader
-              title={t.emotes.title}
-              subtitle={t.emotes.subtitle}
-              onBack={() => navigation.goBack()}
-            />
             <PromoAdCard at="top" style={{ paddingHorizontal: 20, marginBottom: 16 }} />
             <View className="mb-4 flex-row items-end justify-between px-5">
               <Text className="text-lg font-extrabold text-foreground">
