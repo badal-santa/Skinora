@@ -44,6 +44,7 @@ export default function App() {
         onStateChange={trackRoute}
       >
         <Navigator />
+        
         <UpdateSheet allowed={!!routeName && !NO_UPDATE_SHEET.has(routeName)} />
       </NavigationContainer>
     </SafeAreaProvider>
